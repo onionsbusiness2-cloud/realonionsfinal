@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Language } from './types';
 import { translations, faqs } from './translations';
@@ -18,7 +18,7 @@ const BrandLogo = () => (
 
 const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => void }) => {
   const t = translations[lang].nav;
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const languages: { code: Language; label: string }[] = [
     { code: 'ko', label: 'KR' },
@@ -28,11 +28,20 @@ const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => v
     { code: 'es', label: 'ES' },
   ];
 
+  // Prevent scroll when drawer is open
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isDrawerOpen]);
+
   return (
-    <nav className="fixed top-0 w-full z-[100] apple-blur border-b border-black/5">
-      <div className="max-w-[1200px] mx-auto px-6">
-        <div className="flex justify-between h-20 items-center">
-          <Link to="/" className="flex items-center space-x-3 group">
+    <>
+      <nav className="fixed top-0 w-full z-[100] apple-blur border-b border-black/5 h-20 flex items-center">
+        <div className="max-w-[1200px] mx-auto px-6 w-full flex justify-between items-center">
+          <Link to="/" className="flex items-center space-x-3 group" onClick={() => setIsDrawerOpen(false)}>
             <BrandLogo />
             <div className="flex flex-col">
               <span className="text-[17px] font-black tracking-tight text-[#1A2A44] leading-tight">ONIONS</span>
@@ -40,6 +49,7 @@ const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => v
             </div>
           </Link>
           
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex space-x-8 items-center">
             <div className="flex space-x-8 mr-4">
               <Link to="/" className="text-[13px] font-bold text-[#1A2A44]/60 hover:text-[#1A2A44] transition">{t.home}</Link>
@@ -51,7 +61,7 @@ const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => v
             
             <Link to="/contact" className="bg-[#1A2A44] text-white px-6 py-2.5 rounded-full text-[13px] font-bold hover:shadow-xl transition-all hover:-translate-y-0.5">{t.contact}</Link>
             
-            <div className="flex space-x-1 bg-black/5 p-1 rounded-full border border-black/5">
+            <div className="flex space-x-1 bg-black/5 p-1 rounded-full border border-black/5 ml-4">
                {languages.map(l => (
                  <button 
                   key={l.code} 
@@ -64,31 +74,59 @@ const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => v
             </div>
           </div>
 
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden p-2 text-[#1A2A44]">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8h16M4 16h16" /></svg>
+          {/* Hamburger Toggle */}
+          <button 
+            onClick={() => setIsDrawerOpen(true)} 
+            className="lg:hidden p-3 -mr-3 text-[#1A2A44] hover:bg-black/5 rounded-full transition-colors"
+            aria-label="Open Menu"
+          >
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </button>
         </div>
-      </div>
-      
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-20 bg-[#FAF9F6] z-[90] px-8 py-10 space-y-6 flex flex-col overflow-y-auto animate-in slide-in-from-right duration-300">
-          <div className="flex flex-col space-y-6 text-[28px] font-black">
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>{t.home}</Link>
-            <Link to="/services" onClick={() => setIsMenuOpen(false)}>{t.services}</Link>
-            <Link to="/about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
-            <Link to="/blog" onClick={() => setIsMenuOpen(false)}>{t.blog}</Link>
-            <Link to="/faq" onClick={() => setIsMenuOpen(false)}>{t.faq}</Link>
-            <Link to="/contact" className="text-[#D4AF37]" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
+      </nav>
+
+      {/* Side Drawer Overlay */}
+      <div 
+        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-[110] transition-opacity duration-300 ${isDrawerOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        onClick={() => setIsDrawerOpen(false)}
+      />
+
+      {/* Side Drawer Panel */}
+      <aside 
+        className={`fixed top-0 right-0 h-full w-[80%] max-w-[400px] bg-white z-[120] shadow-2xl transition-transform duration-500 ease-in-out ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      >
+        <div className="p-8 h-full flex flex-col">
+          <div className="flex justify-between items-center mb-12">
+            <BrandLogo />
+            <button 
+              onClick={() => setIsDrawerOpen(false)}
+              className="p-2 text-[#1A2A44]/40 hover:text-[#1A2A44] transition-colors"
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          <div className="pt-8 border-t border-[#1A2A44]/10">
-             <p className="text-[12px] font-black uppercase tracking-[0.2em] text-[#1A2A44]/30 mb-6">Select Language</p>
-             <div className="grid grid-cols-3 gap-3">
+
+          <nav className="flex flex-col space-y-6 text-[22px] font-black tracking-tight text-[#1A2A44]">
+            <Link to="/" onClick={() => setIsDrawerOpen(false)} className="hover:text-[#D4AF37] transition-colors">{t.home}</Link>
+            <Link to="/services" onClick={() => setIsDrawerOpen(false)} className="hover:text-[#D4AF37] transition-colors">{t.services}</Link>
+            <Link to="/about" onClick={() => setIsDrawerOpen(false)} className="hover:text-[#D4AF37] transition-colors">{t.about}</Link>
+            <Link to="/blog" onClick={() => setIsDrawerOpen(false)} className="hover:text-[#D4AF37] transition-colors">{t.blog}</Link>
+            <Link to="/faq" onClick={() => setIsDrawerOpen(false)} className="hover:text-[#D4AF37] transition-colors">{t.faq}</Link>
+            <Link to="/contact" onClick={() => setIsDrawerOpen(false)} className="text-[#D4AF37] pt-4 border-t border-black/5">{t.contact}</Link>
+          </nav>
+
+          <div className="mt-auto">
+             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1A2A44]/30 mb-4">Select Language</p>
+             <div className="grid grid-cols-5 gap-2">
                 {languages.map(l => (
                   <button 
                     key={l.code} 
-                    onClick={() => { setLang(l.code); setIsMenuOpen(false); }} 
-                    className={`px-4 py-4 rounded-2xl text-[13px] font-black transition-all ${lang === l.code ? 'bg-[#1A2A44] text-white shadow-xl scale-105' : 'bg-white border border-[#1A2A44]/10 text-[#1A2A44]/60 active:scale-95'}`}
+                    onClick={() => { setLang(l.code); setIsDrawerOpen(false); }} 
+                    className={`aspect-square rounded-xl text-[11px] font-black transition-all ${lang === l.code ? 'bg-[#1A2A44] text-white shadow-lg' : 'bg-black/5 text-[#1A2A44]/50 active:scale-95'}`}
                   >
                     {l.label}
                   </button>
@@ -96,8 +134,8 @@ const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => v
              </div>
           </div>
         </div>
-      )}
-    </nav>
+      </aside>
+    </>
   );
 };
 
@@ -185,7 +223,7 @@ const HomePage = ({ lang }: { lang: Language }) => {
            <img 
              src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=2000" 
              alt="Onions Business Team" 
-             className="w-full h-[450px] md:h-[650px] object-cover rounded-[50px] shadow-3xl brightness-[0.95] saturate-[1.1] transition-all hover:saturate-[1.2]"
+             className="w-full h-[350px] md:h-[650px] object-cover rounded-[40px] md:rounded-[60px] shadow-3xl brightness-[0.95] saturate-[1.1] transition-all hover:saturate-[1.2]"
              loading="eager"
            />
            <div className="absolute -bottom-8 right-16 bg-white/95 backdrop-blur-xl p-10 rounded-[35px] shadow-2xl z-20 hidden lg:block max-w-[320px] warm-card">
@@ -244,7 +282,6 @@ const ServicesPage = ({ lang }: { lang: Language }) => {
   const handleAIDemo = async () => {
     if (!prompt) return;
     setIsProcessing(true);
-    // Simulate AI Image generation logic as a placeholder demo for user request
     setTimeout(() => {
         setEditingImage(`https://images.unsplash.com/photo-1544215891-ceb1ac432d97?auto=format&fit=crop&q=80&w=1200&sat=-100&sepia=50`);
         setIsProcessing(false);
@@ -263,7 +300,7 @@ const ServicesPage = ({ lang }: { lang: Language }) => {
         {/* 5-Step Process */}
         <div className="mb-48">
            <h2 className="text-[36px] font-black text-center mb-20 text-[#1A2A44]">{t.services.process_title}</h2>
-           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
               {t.services.process_steps.map((step, i) => (
                 <div key={i} className="warm-card p-12 rounded-[50px] relative overflow-hidden group">
                   <div className="text-[120px] font-black text-[#D4AF37]/5 absolute -right-6 -bottom-10 select-none group-hover:text-[#D4AF37]/10 transition-all">0{i+1}</div>
@@ -277,19 +314,19 @@ const ServicesPage = ({ lang }: { lang: Language }) => {
            </div>
         </div>
 
-        {/* AI Image Enhancement Tool - Feature Request Implementation */}
-        <div className="mb-48 bg-[#1A2A44] rounded-[60px] p-12 lg:p-24 text-white overflow-hidden relative">
+        {/* AI Demo Section */}
+        <div className="mb-48 bg-[#1A2A44] rounded-[60px] p-12 lg:p-24 text-white overflow-hidden relative shadow-3xl">
             <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none bg-gradient-to-l from-[#D4AF37] to-transparent"></div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                 <div className="relative">
-                    <span className="text-[#D4AF37] font-black text-[11px] uppercase tracking-widest mb-6 block">Innovation: Gemini 2.5 Powered</span>
-                    <h2 className="text-[40px] lg:text-[56px] font-black leading-none mb-10">Smart Image<br/>Inspection Tools</h2>
-                    <p className="text-[18px] text-white/50 mb-12 font-medium">Use our experimental AI tool to apply filters or enhance product photos for better presentation in your local market.</p>
+                    <span className="text-[#D4AF37] font-black text-[11px] uppercase tracking-widest mb-6 block">Innovation Preview</span>
+                    <h2 className="text-[40px] lg:text-[56px] font-black leading-none mb-10">Smart Image<br/>Enhancer</h2>
+                    <p className="text-[18px] text-white/50 mb-12 font-medium">Experience our internal tech for professional product presentation.</p>
                     <div className="flex flex-col gap-4">
                         <input 
                             value={prompt} 
                             onChange={(e) => setPrompt(e.target.value)} 
-                            placeholder="e.g. 'Add a retro filter' or 'Enhance details'" 
+                            placeholder="e.g. 'Vintage look'" 
                             className="bg-white/10 border border-white/20 px-8 py-5 rounded-2xl outline-none focus:border-[#D4AF37] transition text-white placeholder:text-white/20 font-bold"
                         />
                         <button 
@@ -297,7 +334,7 @@ const ServicesPage = ({ lang }: { lang: Language }) => {
                             disabled={isProcessing}
                             className="bg-[#D4AF37] text-white py-5 rounded-2xl font-black text-lg hover:shadow-2xl transition active:scale-95 disabled:opacity-50"
                         >
-                            {isProcessing ? 'Processing...' : 'Apply AI Edit'}
+                            {isProcessing ? 'Processing...' : 'Enhance Image'}
                         </button>
                     </div>
                 </div>
@@ -307,7 +344,6 @@ const ServicesPage = ({ lang }: { lang: Language }) => {
                         className="w-full h-full object-cover rounded-[35px] transition-all duration-1000 shadow-2xl" 
                         alt="AI Preview"
                     />
-                    {isProcessing && <div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center font-black text-[#D4AF37] text-2xl">GEMINI PROCESSING...</div>}
                 </div>
             </div>
         </div>
@@ -324,7 +360,7 @@ const ServicesPage = ({ lang }: { lang: Language }) => {
                     loading="lazy"
                    />
                 </div>
-                <div className="p-14 flex flex-col flex-1">
+                <div className="p-10 lg:p-14 flex flex-col flex-1">
                   <div className="w-16 h-16 bg-[#1A2A44] text-white rounded-[24px] flex items-center justify-center mb-10 shadow-lg group-hover:bg-[#D4AF37] transition-all transform group-hover:rotate-6">
                     <BrandLogo />
                   </div>
@@ -332,7 +368,7 @@ const ServicesPage = ({ lang }: { lang: Language }) => {
                   <p className="text-[#1A2A44]/60 text-[17px] leading-relaxed mb-12 font-medium">{item.desc}</p>
                   <div className="mt-auto pt-10 border-t border-[#1A2A44]/5 flex justify-between items-center">
                      <div className="flex flex-col">
-                        <span className="text-[10px] font-black tracking-[0.2em] uppercase text-[#D4AF37]">Supply Policy</span>
+                        <span className="text-[10px] font-black tracking-[0.2em] uppercase text-[#D4AF37]">Policy</span>
                         <span className="text-[15px] font-black text-[#1A2A44]">{t.services.moq}</span>
                      </div>
                      <Link to="/contact" className="bg-[#FAF9F6] border border-[#1A2A44]/10 px-10 py-3.5 rounded-full font-black text-[14px] hover:bg-[#1A2A44] hover:text-white transition-all shadow-sm active:scale-95">Inquire</Link>
@@ -365,7 +401,7 @@ const BlogPage = ({ lang }: { lang: Language }) => {
                 LIVE UPDATED
               </div>
            </div>
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {[
                 "https://images.unsplash.com/photo-1544215891-ceb1ac432d97",
                 "https://images.unsplash.com/photo-1550355291-bbee04a92027",
@@ -375,7 +411,7 @@ const BlogPage = ({ lang }: { lang: Language }) => {
                    <div className="aspect-[5/4] bg-slate-100 overflow-hidden">
                       <img src={`${img}?auto=format&fit=crop&q=80&w=800`} className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" alt="Inventory Item" />
                    </div>
-                   <div className="p-12">
+                   <div className="p-10 lg:p-12">
                       <div className="flex justify-between mb-6">
                          <span className="text-[11px] font-black bg-[#FAF9F6] border border-[#D4AF37]/20 text-[#D4AF37] px-5 py-2 rounded-full uppercase">Verified A+</span>
                          <span className="text-[12px] font-black text-[#1A2A44]/20 tracking-widest">ID: {2024001 + i}</span>
@@ -421,13 +457,13 @@ const AboutPage = ({ lang }: { lang: Language }) => {
                  {t.about.story_content}
               </div>
            </div>
-           <div className="order-1 lg:order-2 rounded-[70px] overflow-hidden shadow-3xl h-[600px] lg:h-[800px] relative border-[12px] border-white group">
+           <div className="order-1 lg:order-2 rounded-[50px] md:rounded-[70px] overflow-hidden shadow-3xl h-[500px] lg:h-[800px] relative border-[10px] md:border-[12px] border-white group">
               <img 
                 src="https://images.unsplash.com/photo-1519085115968-39902309a797?auto=format&fit=crop&q=80&w=1000" 
                 className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" 
                 alt="CEO Onion" 
               />
-              <div className="absolute bottom-12 left-12 bg-white/90 backdrop-blur-xl p-10 rounded-[40px] shadow-2xl">
+              <div className="absolute bottom-10 left-10 md:bottom-12 md:left-12 bg-white/90 backdrop-blur-xl p-8 md:p-10 rounded-[40px] shadow-2xl">
                  <div className="text-[12px] font-black text-[#D4AF37] tracking-[0.3em] mb-2 uppercase">Representative CEO</div>
                  <div className="text-[28px] font-black text-[#1A2A44]">Captain Lee (Onion)</div>
                  <p className="text-[14px] font-bold text-[#1A2A44]/40 mt-2 italic">Former ROK Air Force Captain</p>
@@ -435,7 +471,7 @@ const AboutPage = ({ lang }: { lang: Language }) => {
            </div>
         </div>
         
-        <div className="bg-white rounded-[70px] p-12 lg:p-32 shadow-sm border border-[#D4AF37]/5 mb-48 text-center">
+        <div className="bg-white rounded-[60px] md:rounded-[70px] p-12 lg:p-32 shadow-sm border border-[#D4AF37]/5 mb-48 text-center">
            <h3 className="text-[42px] font-black tracking-tight mb-28">{t.about.expertise_title}</h3>
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             {t.about.expertise_list.map((exp, i) => (
@@ -447,7 +483,6 @@ const AboutPage = ({ lang }: { lang: Language }) => {
           </div>
         </div>
 
-        {/* Gallery Optimized */}
         <div className="mb-48">
            <div className="text-center mb-28">
               <span className="section-tag">Infrastructure</span>
@@ -473,7 +508,7 @@ const AboutPage = ({ lang }: { lang: Language }) => {
            </div>
         </div>
 
-        <div className="bg-[#1A2A44] rounded-[75px] p-16 lg:p-32 text-white text-center shadow-3xl relative overflow-hidden">
+        <div className="bg-[#1A2A44] rounded-[60px] md:rounded-[75px] p-16 lg:p-32 text-white text-center shadow-3xl relative overflow-hidden">
            <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
            <h2 className="text-[36px] md:text-[56px] font-black tracking-tight mb-10 leading-none relative z-10">Expand Your Business Globally</h2>
            <p className="text-[20px] text-white/50 mb-16 max-w-[700px] mx-auto font-medium relative z-10">Join our network of hundreds of global partners who trust our uncompromising standards.</p>
@@ -491,18 +526,18 @@ const FAQPage = ({ lang }: { lang: Language }) => {
       <div className="max-w-[900px] mx-auto px-6">
         <div className="text-center mb-32">
            <span className="section-tag">Resources</span>
-           <h1 className="text-[56px] md:text-[80px] font-black tracking-tight leading-none">Frequently<br/>Asked Questions</h1>
+           <h1 className="text-[56px] md:text-[80px] font-black tracking-tight leading-none text-balance">Frequently Asked Questions</h1>
         </div>
         <div className="space-y-8">
           {f.map((item, i) => (
             <details key={i} className="group warm-card rounded-[40px] overflow-hidden border border-[#D4AF37]/5">
-              <summary className="px-12 py-10 cursor-pointer list-none flex justify-between items-center text-[22px] font-black text-[#1A2A44] leading-tight">
+              <summary className="px-10 lg:px-12 py-10 cursor-pointer list-none flex justify-between items-center text-[22px] font-black text-[#1A2A44] leading-tight">
                 {item.question}
-                <div className="w-10 h-10 rounded-full border border-[#D4AF37]/20 flex items-center justify-center group-open:rotate-180 transition-transform bg-white shadow-sm">
+                <div className="w-10 h-10 rounded-full border border-[#D4AF37]/20 flex items-center justify-center group-open:rotate-180 transition-transform bg-white shadow-sm shrink-0 ml-4">
                   <svg className="w-5 h-5 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
                 </div>
               </summary>
-              <div className="px-12 pb-12 text-[#1A2A44]/50 text-[18px] leading-relaxed font-medium border-t border-[#1A2A44]/5 pt-8 mx-12 mb-4">
+              <div className="px-10 lg:px-12 pb-12 text-[#1A2A44]/50 text-[18px] leading-relaxed font-medium border-t border-[#1A2A44]/5 pt-8 mx-10 lg:mx-12 mb-4">
                 {item.answer}
               </div>
             </details>
@@ -543,12 +578,12 @@ const ContactPage = ({ lang }: { lang: Language }) => {
             </div>
 
             <div className="lg:col-span-7">
-               <div className="bg-white p-12 lg:p-20 rounded-[75px] shadow-3xl border border-[#D4AF37]/5">
+               <div className="bg-white p-10 lg:p-20 rounded-[60px] lg:rounded-[75px] shadow-3xl border border-[#D4AF37]/5">
                   <form className="space-y-12" onSubmit={(e) => {e.preventDefault(); alert("Inquiry Submitted to Captain Onion.");}}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                        <div className="relative group">
                          <label className="block text-[11px] font-black mb-5 text-[#D4AF37] uppercase tracking-[0.2em]">{t.contact.form_name}</label>
-                         <input type="text" className="w-full border-b-2 border-[#1A2A44]/10 py-5 outline-none focus:border-[#D4AF37] transition-all bg-transparent text-[20px] font-black placeholder:text-[#1A2A44]/10" placeholder="Full Name / Brand" required />
+                         <input type="text" className="w-full border-b-2 border-[#1A2A44]/10 py-5 outline-none focus:border-[#D4AF37] transition-all bg-transparent text-[20px] font-black placeholder:text-[#1A2A44]/10" placeholder="Full Name" required />
                        </div>
                        <div className="relative group">
                          <label className="block text-[11px] font-black mb-5 text-[#D4AF37] uppercase tracking-[0.2em]">{t.contact.form_email}</label>
@@ -557,7 +592,7 @@ const ContactPage = ({ lang }: { lang: Language }) => {
                     </div>
                     <div className="relative group">
                       <label className="block text-[11px] font-black mb-5 text-[#D4AF37] uppercase tracking-[0.2em]">{t.contact.form_message}</label>
-                      <textarea rows={5} className="w-full border-b-2 border-[#1A2A44]/10 py-5 outline-none focus:border-[#D4AF37] transition-all bg-transparent resize-none text-[20px] font-black placeholder:text-[#1A2A44]/10" placeholder="Items, Qty, Port..." required></textarea>
+                      <textarea rows={5} className="w-full border-b-2 border-[#1A2A44]/10 py-5 outline-none focus:border-[#D4AF37] transition-all bg-transparent resize-none text-[20px] font-black placeholder:text-[#1A2A44]/10" placeholder="Details..." required></textarea>
                     </div>
                     <button type="submit" className="w-full bg-[#1A2A44] text-white py-8 rounded-full font-black text-[22px] hover:shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl">
                       {t.contact.form_submit}
