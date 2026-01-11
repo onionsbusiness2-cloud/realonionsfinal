@@ -1,60 +1,99 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Language } from './types';
 import { translations, faqs } from './translations';
-import { getAIResponse } from './services/geminiService';
+import { GoogleGenAI } from "@google/genai";
 
 // --- Components ---
+
+const BrandLogo = () => (
+  <svg width="36" height="36" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform group-hover:scale-110">
+    <path d="M20 2L38 11V29L20 38L2 29V11L20 2Z" fill="#1A2A44"/>
+    <path d="M20 6L34 13V27L20 34L6 27V13L20 6Z" stroke="#D4AF37" strokeWidth="1.5"/>
+    <path d="M20 12V28M12 20H28" stroke="#D4AF37" strokeWidth="1" strokeLinecap="round" opacity="0.3"/>
+    <circle cx="20" cy="20" r="5" fill="#D4AF37" className="animate-pulse"/>
+  </svg>
+);
 
 const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => void }) => {
   const t = translations[lang].nav;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const languages: { code: Language; label: string }[] = [
+    { code: 'ko', label: 'KR' },
+    { code: 'en', label: 'EN' },
+    { code: 'jp', label: 'JP' },
+    { code: 'zh', label: 'CN' },
+    { code: 'es', label: 'ES' },
+  ];
+
   return (
     <nav className="fixed top-0 w-full z-[100] apple-blur border-b border-black/5">
       <div className="max-w-[1200px] mx-auto px-6">
-        <div className="flex justify-between h-14 items-center">
-          <Link to="/" className="flex items-center space-x-2 group">
-            <div className="w-7 h-7 bg-black rounded-md flex items-center justify-center text-white font-bold text-xs transition group-hover:bg-blue-600">O</div>
-            <span className="text-[17px] font-semibold tracking-tight text-black">onions.business</span>
+        <div className="flex justify-between h-20 items-center">
+          <Link to="/" className="flex items-center space-x-3 group">
+            <BrandLogo />
+            <div className="flex flex-col">
+              <span className="text-[17px] font-black tracking-tight text-[#1A2A44] leading-tight">ONIONS</span>
+              <span className="text-[11px] font-bold text-[#D4AF37] tracking-[0.2em]">BUSINESS</span>
+            </div>
           </Link>
           
-          <div className="hidden md:flex space-x-10 items-center">
-            <Link to="/" className="text-[12px] font-normal text-black/70 hover:text-black transition uppercase tracking-widest">{t.home}</Link>
-            <Link to="/services" className="text-[12px] font-normal text-black/70 hover:text-black transition uppercase tracking-widest">{t.services}</Link>
-            <Link to="/about" className="text-[12px] font-normal text-black/70 hover:text-black transition uppercase tracking-widest">{t.about}</Link>
-            <Link to="/faq" className="text-[12px] font-normal text-black/70 hover:text-black transition uppercase tracking-widest">{t.faq}</Link>
-            <Link to="/contact" className="bg-black text-white px-5 py-1.5 rounded-full text-[12px] font-medium hover:bg-zinc-800 transition tracking-tight">{t.contact}</Link>
+          <div className="hidden lg:flex space-x-8 items-center">
+            <div className="flex space-x-8 mr-4">
+              <Link to="/" className="text-[13px] font-bold text-[#1A2A44]/60 hover:text-[#1A2A44] transition">{t.home}</Link>
+              <Link to="/services" className="text-[13px] font-bold text-[#1A2A44]/60 hover:text-[#1A2A44] transition">{t.services}</Link>
+              <Link to="/about" className="text-[13px] font-bold text-[#1A2A44]/60 hover:text-[#1A2A44] transition">{t.about}</Link>
+              <Link to="/blog" className="text-[13px] font-bold text-[#1A2A44]/60 hover:text-[#1A2A44] transition">{t.blog}</Link>
+              <Link to="/faq" className="text-[13px] font-bold text-[#1A2A44]/60 hover:text-[#1A2A44] transition">{t.faq}</Link>
+            </div>
             
-            <div className="relative group">
-               <span className="text-[12px] font-bold text-black/40 cursor-pointer">{lang.toUpperCase()}</span>
-               <div className="absolute top-full right-0 mt-2 hidden group-hover:block apple-blur border border-black/5 rounded-xl p-2 shadow-2xl">
-                 {(['ko', 'en', 'jp', 'es'] as Language[]).map(l => (
-                   <button key={l} onClick={() => setLang(l)} className="block w-full text-left px-4 py-2 text-[12px] hover:bg-black/5 rounded-lg">{l.toUpperCase()}</button>
-                 ))}
-               </div>
+            <Link to="/contact" className="bg-[#1A2A44] text-white px-6 py-2.5 rounded-full text-[13px] font-bold hover:shadow-xl transition-all hover:-translate-y-0.5">{t.contact}</Link>
+            
+            <div className="flex space-x-1 bg-black/5 p-1 rounded-full border border-black/5">
+               {languages.map(l => (
+                 <button 
+                  key={l.code} 
+                  onClick={() => setLang(l.code)} 
+                  className={`px-3 py-1.5 rounded-full text-[10px] font-black transition-all ${lang === l.code ? 'bg-white text-[#1A2A44] shadow-sm scale-105' : 'text-[#1A2A44]/40 hover:text-[#1A2A44]'}`}
+                 >
+                   {l.label}
+                 </button>
+               ))}
             </div>
           </div>
 
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-black">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 8h16M4 16h16" /></svg>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden p-2 text-[#1A2A44]">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8h16M4 16h16" /></svg>
           </button>
         </div>
       </div>
       
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-14 bg-white z-[90] px-8 py-10 space-y-6 flex flex-col text-[24px] font-bold">
-          <Link to="/" onClick={() => setIsMenuOpen(false)}>{t.home}</Link>
-          <Link to="/services" onClick={() => setIsMenuOpen(false)}>{t.services}</Link>
-          <Link to="/about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
-          <Link to="/faq" onClick={() => setIsMenuOpen(false)}>{t.faq}</Link>
-          <Link to="/contact" className="text-blue-600" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
-          <div className="flex space-x-4 pt-8 border-t border-black/5">
-            {(['ko', 'en', 'jp', 'es'] as Language[]).map(l => (
-              <button key={l} onClick={() => {setLang(l); setIsMenuOpen(false);}} className={`text-[14px] ${lang === l ? 'text-black' : 'text-black/30'}`}>{l.toUpperCase()}</button>
-            ))}
+        <div className="lg:hidden fixed inset-0 top-20 bg-[#FAF9F6] z-[90] px-8 py-10 space-y-6 flex flex-col overflow-y-auto animate-in slide-in-from-right duration-300">
+          <div className="flex flex-col space-y-6 text-[28px] font-black">
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>{t.home}</Link>
+            <Link to="/services" onClick={() => setIsMenuOpen(false)}>{t.services}</Link>
+            <Link to="/about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
+            <Link to="/blog" onClick={() => setIsMenuOpen(false)}>{t.blog}</Link>
+            <Link to="/faq" onClick={() => setIsMenuOpen(false)}>{t.faq}</Link>
+            <Link to="/contact" className="text-[#D4AF37]" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
+          </div>
+          <div className="pt-8 border-t border-[#1A2A44]/10">
+             <p className="text-[12px] font-black uppercase tracking-[0.2em] text-[#1A2A44]/30 mb-6">Select Language</p>
+             <div className="grid grid-cols-3 gap-3">
+                {languages.map(l => (
+                  <button 
+                    key={l.code} 
+                    onClick={() => { setLang(l.code); setIsMenuOpen(false); }} 
+                    className={`px-4 py-4 rounded-2xl text-[13px] font-black transition-all ${lang === l.code ? 'bg-[#1A2A44] text-white shadow-xl scale-105' : 'bg-white border border-[#1A2A44]/10 text-[#1A2A44]/60 active:scale-95'}`}
+                  >
+                    {l.label}
+                  </button>
+                ))}
+             </div>
           </div>
         </div>
       )}
@@ -65,223 +104,123 @@ const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => v
 const Footer = ({ lang }: { lang: Language }) => {
   const t = translations[lang];
   return (
-    <footer className="bg-[#f5f5f7] text-black/50 py-20 border-t border-black/5">
-      <div className="max-w-[1000px] mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-[12px] mb-16">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 text-black font-bold">
-               <div className="w-6 h-6 bg-black rounded flex items-center justify-center text-white text-[10px]">O</div>
-               <span>Onions Business</span>
+    <footer className="bg-white text-[#1A2A44]/60 py-24 border-t border-black/5">
+      <div className="max-w-[1100px] mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-16 text-[13px] mb-20">
+          <div className="space-y-6">
+            <div className="flex items-center space-x-3 text-[#1A2A44] font-bold">
+               <BrandLogo />
+               <div className="flex flex-col">
+                  <span className="text-[17px] font-black tracking-tight">ONIONS</span>
+                  <span className="text-[11px] font-bold text-[#D4AF37] tracking-[0.2em]">BUSINESS</span>
+                </div>
             </div>
-            <p className="leading-relaxed">Export excellence powered by military integrity. Global sourcing of used vehicles and parts.</p>
+            <p className="leading-relaxed">Trusted Korean Export Partner. Built on military-grade integrity and mechanical expertise.</p>
           </div>
           <div>
-            <h4 className="text-black font-semibold mb-4 uppercase tracking-widest">{t.nav.services}</h4>
-            <ul className="space-y-3">
+            <h4 className="text-[#1A2A44] font-black mb-6 uppercase tracking-widest text-[11px]">Core Services</h4>
+            <ul className="space-y-4 font-medium">
               <li>{t.services.items.tires.title}</li>
               <li>{t.services.items.cars.title}</li>
               <li>{t.services.items.machinery.title}</li>
+              <li>{t.services.items.appliances.title}</li>
+              <li>{t.services.items.clothing.title}</li>
             </ul>
           </div>
           <div>
-            <h4 className="text-black font-semibold mb-4 uppercase tracking-widest">Connect</h4>
-            <ul className="space-y-3">
-              <li>Email: tjdgus5362@naver.com</li>
-              <li>WhatsApp: +82 10-5362-XXXX</li>
-              <li>Incheon / Pyeongtaek</li>
+            <h4 className="text-[#1A2A44] font-black mb-6 uppercase tracking-widest text-[11px]">Connect</h4>
+            <ul className="space-y-4 font-medium">
+              <li className="text-[#1A2A44]">onionsbusiness2@gmail.com</li>
+              <li className="text-[#1A2A44]">+82 10-5772-5362</li>
+              <li>Pyeongtaek Global Hub</li>
             </ul>
           </div>
           <div>
-            <h4 className="text-black font-semibold mb-4 uppercase tracking-widest">Language</h4>
-            <div className="flex flex-wrap gap-2">
-               {(['ko', 'en', 'jp', 'es'] as Language[]).map(l => (
-                  <span key={l} className="hover:text-black cursor-pointer uppercase">{l}</span>
+            <h4 className="text-[#1A2A44] font-black mb-6 uppercase tracking-widest text-[11px]">Global</h4>
+            <div className="flex flex-wrap gap-4 font-black">
+               {['KR', 'EN', 'JP', 'CN', 'ES'].map(l => (
+                  <span key={l} className="hover:text-[#D4AF37] cursor-pointer text-[11px]">{l}</span>
                ))}
             </div>
           </div>
         </div>
-        <div className="pt-8 border-t border-black/10 text-[11px] leading-relaxed">
-           <p>Copyright © 2024 Onions Business Inc. All rights reserved.</p>
-           <p className="mt-2">Operating from Pyeongtaek Global Yard. Certified Automotive Maintenance License Holder.</p>
+        <div className="pt-10 border-t border-[#1A2A44]/5 text-[12px] flex flex-col md:flex-row justify-between items-center opacity-40">
+           <p>© 2024 Onions Business. All rights reserved.</p>
+           <p className="flex items-center"><span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span> Active</p>
         </div>
       </div>
     </footer>
   );
 };
 
-const ChatAssistant = ({ lang }: { lang: Language }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ role: 'user' | 'ai'; content: string }[]>([]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSend = async () => {
-    if (!input.trim()) return;
-    const userMsg = input;
-    setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
-    setIsLoading(true);
-
-    const response = await getAIResponse(userMsg, lang);
-    setMessages(prev => [...prev, { role: 'ai', content: response }]);
-    setIsLoading(false);
-  };
-
-  return (
-    <div className="fixed bottom-10 right-10 z-[200]">
-      {isOpen ? (
-        <div className="bg-white/80 backdrop-blur-3xl w-[340px] h-[500px] rounded-[28px] shadow-[0_20px_60px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden border border-black/10">
-          <div className="p-6 pb-2 flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-[13px] font-semibold text-black/80">Onion Concierge</span>
-            </div>
-            <button onClick={() => setIsOpen(false)} className="bg-black/5 p-1 rounded-full hover:bg-black/10 transition">
-              <svg className="w-4 h-4 text-black/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto p-6 space-y-4 text-[14px]">
-            {messages.length === 0 && (
-              <div className="text-black/40 leading-relaxed font-medium">Hello, I'm your Onion Business assistant. How can I help with your global sourcing today?</div>
-            )}
-            {messages.map((m, i) => (
-              <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] px-4 py-2.5 rounded-[18px] ${m.role === 'user' ? 'bg-black text-white' : 'bg-[#f5f5f7] text-black/80'}`}>
-                  {m.content}
-                </div>
-              </div>
-            ))}
-            {isLoading && <div className="text-[10px] text-black/30 font-bold tracking-widest uppercase">Analyzing Market...</div>}
-          </div>
-          <div className="p-4 border-t border-black/5 flex space-x-2 bg-white/40">
-            <input 
-              value={input} 
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              className="flex-1 bg-transparent border-none rounded-lg px-2 py-2 text-[13px] outline-none"
-              placeholder="Ask for shipping or quote..."
-            />
-            <button onClick={handleSend} className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-700 transition">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-            </button>
-          </div>
-        </div>
-      ) : (
-        <button 
-          onClick={() => setIsOpen(true)}
-          className="bg-black text-white w-14 h-14 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:scale-105 transition active:scale-95 flex items-center justify-center"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-        </button>
-      )}
-    </div>
-  );
-};
-
-// --- Pages ---
+// --- Page Components ---
 
 const HomePage = ({ lang }: { lang: Language }) => {
   const t = translations[lang];
   return (
-    <div className="pt-14">
-      {/* Hero: Apple Style (Large Text, High Quality Product Shot) */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-6 overflow-hidden bg-white">
-        <div className="z-10 max-w-[900px]">
-           <div className="inline-block px-4 py-1.5 bg-[#f5f5f7] rounded-full text-[12px] font-bold text-black/50 tracking-tight mb-8">
-             ONION EXPORT AGENCY
-           </div>
-           <h1 className="text-[52px] md:text-[84px] font-bold tracking-[-0.03em] leading-[1.05] text-black text-balance">
+    <div className="pt-20">
+      <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-6 hero-gradient overflow-hidden">
+        <div className="z-10 max-w-[1000px] pt-10">
+           <span className="section-tag animate-bounce">Global Export Standard</span>
+           <h1 className="text-[44px] md:text-[88px] font-black tracking-[-0.04em] leading-[1.05] text-[#1A2A44] text-balance mb-8 whitespace-pre-line">
              {t.hero.title}
            </h1>
-           <p className="mt-8 text-[19px] md:text-[24px] text-black/50 max-w-[600px] mx-auto leading-relaxed text-balance font-medium">
+           <p className="text-[18px] md:text-[24px] text-[#1A2A44]/50 max-w-[750px] mx-auto leading-relaxed font-medium mb-12">
              {t.hero.subtitle}
            </p>
-           <div className="mt-12 flex flex-col sm:flex-row gap-5 justify-center">
-             <Link to="/contact" className="bg-black text-white px-8 py-4 rounded-full font-bold text-[17px] hover:bg-zinc-800 transition tracking-tight">
+           <div className="flex flex-col sm:flex-row gap-5 justify-center mb-24">
+             <Link to="/contact" className="bg-[#1A2A44] text-white px-12 py-5 rounded-full font-black text-[18px] hover:shadow-2xl hover:scale-[1.05] transition-all active:scale-95">
                {t.hero.cta}
              </Link>
-             <button className="text-blue-600 px-8 py-4 rounded-full font-semibold text-[17px] hover:bg-blue-50 transition flex items-center justify-center">
-               {t.hero.cta_whatsapp} 
-               <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" /></svg>
-             </button>
+             <a href="https://wa.me/821057725362" className="bg-white text-[#1A2A44] px-12 py-5 rounded-full font-black text-[18px] border border-[#1A2A44]/10 hover:bg-[#FAF9F6] transition-all flex items-center justify-center hover:shadow-xl">
+               <svg className="w-6 h-6 mr-3 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.633 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+               {t.hero.cta_whatsapp}
+             </a>
            </div>
         </div>
         
-        {/* Cinematic Imagery (Car focused) */}
-        <div className="mt-20 w-full max-w-[1400px] px-6">
+        {/* Main Hero Image - Optimized */}
+        <div className="w-full max-w-[1200px] px-6 relative">
+           <div className="absolute inset-0 bg-gradient-to-t from-[#FAF9F6] via-transparent to-transparent z-10 pointer-events-none"></div>
            <img 
-             src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=2070&auto=format&fit=crop" 
-             alt="Luxury Vehicles" 
-             className="w-full h-[600px] object-cover rounded-[40px] shadow-2xl brightness-[0.9]"
+             src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=2000" 
+             alt="Onions Business Team" 
+             className="w-full h-[450px] md:h-[650px] object-cover rounded-[50px] shadow-3xl brightness-[0.95] saturate-[1.1] transition-all hover:saturate-[1.2]"
+             loading="eager"
            />
+           <div className="absolute -bottom-8 right-16 bg-white/95 backdrop-blur-xl p-10 rounded-[35px] shadow-2xl z-20 hidden lg:block max-w-[320px] warm-card">
+              <p className="text-[16px] font-bold italic leading-relaxed text-[#1A2A44] mb-4">
+                "Honesty is our greatest asset. We bridge Korea and the world with military-grade precision."
+              </p>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-[#D4AF37]/10 flex items-center justify-center font-black text-[#D4AF37]">O</div>
+                <p className="text-[12px] font-black text-[#1A2A44] uppercase tracking-widest">Representative Onion</p>
+              </div>
+           </div>
         </div>
       </section>
 
-      {/* Stats: Minimalist */}
-      <section className="py-32 bg-white">
-        <div className="max-w-[1000px] mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-20">
-          <div className="text-center">
-            <div className="text-[48px] font-bold text-black tracking-tight">100k+</div>
-            <div className="text-[14px] font-bold text-black/30 uppercase tracking-widest mt-2">{t.stats.label1}</div>
+      {/* Philosophy Icons */}
+      <section className="py-40 px-6">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="text-center mb-28">
+             <span className="section-tag">Why Us</span>
+             <h2 className="text-[40px] md:text-[60px] font-black tracking-tight text-[#1A2A44]">Our Core Foundations</h2>
           </div>
-          <div className="text-center">
-            <div className="text-[48px] font-bold text-black tracking-tight">30+</div>
-            <div className="text-[14px] font-bold text-black/30 uppercase tracking-widest mt-2">{t.stats.label2}</div>
-          </div>
-          <div className="text-center">
-            <div className="text-[48px] font-bold text-black tracking-tight">99%</div>
-            <div className="text-[14px] font-bold text-black/30 uppercase tracking-widest mt-2">{t.stats.label3}</div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Grid: Apple-style Glass Cards */}
-      <section className="py-40 bg-[#f5f5f7]">
-        <div className="max-w-[1200px] mx-auto px-6 text-center">
-          <h2 className="text-[40px] md:text-[56px] font-bold tracking-tight mb-4">{t.services.title}</h2>
-          <p className="text-[19px] text-black/40 mb-20 max-w-[600px] mx-auto font-medium">{t.services.description}</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {Object.entries(t.services.items).map(([key, item]) => (
-              <div key={key} className="glass-card bg-white p-10 rounded-[32px] text-left flex flex-col">
-                <div className="w-12 h-12 bg-black text-white rounded-[14px] flex items-center justify-center mb-10 text-[20px] font-bold">
-                  {key[0].toUpperCase()}
-                </div>
-                <h3 className="text-[21px] font-bold mb-4">{item.title}</h3>
-                <p className="text-black/50 text-[15px] leading-relaxed mb-10 font-medium">{item.desc}</p>
-                <div className="mt-auto pt-6 border-t border-black/5 text-[12px] font-bold text-black uppercase tracking-widest">{t.services.moq}</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            {[
+              { title: "Military Discipline", desc: "Former Air Force Captain Lee ensures absolute honesty in every deal.", icon: "🎖️" },
+              { title: "Technical Mastery", desc: "Official auto-maintenance certification for deep technical inspection.", icon: "🔧" },
+              { title: "Scale & Stability", desc: "5,000-pyeong logistics yard in Pyeongtaek for massive inventory control.", icon: "🏗️" },
+              { title: "Global Network", desc: "Connected to nationwide scrap yards for best pricing and bulk supply.", icon: "🌐" }
+            ].map((benefit, i) => (
+              <div key={i} className="warm-card p-12 rounded-[45px] flex flex-col items-center text-center group">
+                <div className="w-20 h-20 bg-[#FAF9F6] rounded-[28px] flex items-center justify-center text-4xl mb-10 border border-[#D4AF37]/10 shadow-sm group-hover:scale-110 transition-transform">{benefit.icon}</div>
+                <h3 className="text-[22px] font-bold mb-5">{benefit.title}</h3>
+                <p className="text-[15px] leading-relaxed text-[#1A2A44]/60 font-medium">{benefit.desc}</p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Founder Section: Apple "Meet the Expert" */}
-      <section className="py-40 bg-white">
-        <div className="max-w-[1200px] mx-auto px-6">
-           <div className="bg-black rounded-[48px] overflow-hidden flex flex-col lg:flex-row items-center">
-              <div className="p-12 lg:p-24 lg:w-3/5 text-white">
-                 <div className="text-blue-500 font-bold tracking-widest uppercase text-[12px] mb-6">Built with Integrity</div>
-                 <h2 className="text-[32px] md:text-[48px] font-bold tracking-tight leading-[1.1] mb-10">
-                   {t.about.story_title}
-                 </h2>
-                 <p className="text-[17px] md:text-[20px] text-white/60 leading-relaxed font-light mb-12 italic">
-                   "{t.about.story_content}"
-                 </p>
-                 <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-full border border-white/20 overflow-hidden">
-                       <img src="https://images.unsplash.com/photo-1519085115968-39902309a797?q=80&w=1974&auto=format&fit=crop" alt="CEO" className="w-full h-full object-cover" />
-                    </div>
-                    <div>
-                       <div className="font-bold">Onion</div>
-                       <div className="text-[12px] text-white/40 uppercase tracking-widest">CEO | Former Air Force Captain</div>
-                    </div>
-                 </div>
-              </div>
-              <div className="lg:w-2/5 w-full h-[400px] lg:h-full">
-                 <img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?q=80&w=2070&auto=format&fit=crop" alt="Integrity" className="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700" />
-              </div>
-           </div>
         </div>
       </section>
     </div>
@@ -290,52 +229,175 @@ const HomePage = ({ lang }: { lang: Language }) => {
 
 const ServicesPage = ({ lang }: { lang: Language }) => {
   const t = translations[lang];
+  const [editingImage, setEditingImage] = useState<string | null>(null);
+  const [prompt, setPrompt] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const serviceItemImages: Record<string, string> = {
+    tires: "https://images.unsplash.com/photo-1544215891-ceb1ac432d97?auto=format&fit=crop&q=80&w=1200",
+    cars: "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&q=80&w=1200",
+    machinery: "https://images.unsplash.com/photo-1581094288338-2314dddb7ec4?auto=format&fit=crop&q=80&w=1200",
+    appliances: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1200",
+    clothing: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=1200"
+  };
+
+  const handleAIDemo = async () => {
+    if (!prompt) return;
+    setIsProcessing(true);
+    // Simulate AI Image generation logic as a placeholder demo for user request
+    setTimeout(() => {
+        setEditingImage(`https://images.unsplash.com/photo-1544215891-ceb1ac432d97?auto=format&fit=crop&q=80&w=1200&sat=-100&sepia=50`);
+        setIsProcessing(false);
+    }, 2000);
+  };
+
   return (
-    <div className="pt-28 pb-40 bg-white">
-      <div className="max-w-[1000px] mx-auto px-6">
-        <div className="text-center mb-32">
-          <div className="text-blue-600 font-bold uppercase tracking-widest text-[12px] mb-6">Expertise</div>
-          <h1 className="text-[48px] md:text-[64px] font-bold tracking-tight mb-6">{t.services.title}</h1>
-          <p className="text-[21px] text-black/40 font-medium max-w-[600px] mx-auto">{t.services.description}</p>
+    <div className="pt-28 pb-40 bg-[#FAF9F6]">
+      <div className="max-w-[1200px] mx-auto px-6">
+        <div className="text-center mb-36">
+          <span className="section-tag">Superior Quality</span>
+          <h1 className="text-[48px] md:text-[72px] font-black tracking-tight mb-8 leading-none">{t.services.title}</h1>
+          <p className="text-[22px] text-[#1A2A44]/40 font-medium max-w-[800px] mx-auto">{t.services.description}</p>
         </div>
 
-        <div className="space-y-40">
-           {/* Tires Detail */}
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-             <div className="space-y-8">
-               <h2 className="text-[36px] font-bold tracking-tight">{t.services.items.tires.title}</h2>
-               <div className="text-[16px] text-black/60 leading-relaxed space-y-4 font-medium">
-                  <p>Korean used tires are worldwide known for their tread durability and modern compounds. We leverage a nationwide network to source specific sizes and grades.</p>
-                  <ul className="space-y-2">
-                    <li className="flex items-center space-x-3"><span className="w-1.5 h-1.5 bg-black rounded-full"></span> <span>Grade A: Above 80% tread life remaining</span></li>
-                    <li className="flex items-center space-x-3"><span className="w-1.5 h-1.5 bg-black rounded-full"></span> <span>Strictly 5 years or younger age guarantee</span></li>
-                    <li className="flex items-center space-x-3"><span className="w-1.5 h-1.5 bg-black rounded-full"></span> <span>Moisture-proof container packing</span></li>
-                  </ul>
-               </div>
-               <Link to="/contact" className="inline-block bg-[#f5f5f7] px-8 py-3 rounded-full font-bold text-[14px] hover:bg-black hover:text-white transition">Request Catalog</Link>
-             </div>
-             <div className="rounded-[40px] overflow-hidden shadow-2xl">
-               <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop" alt="Tire Inspection" className="w-full aspect-square object-cover" />
-             </div>
+        {/* 5-Step Process */}
+        <div className="mb-48">
+           <h2 className="text-[36px] font-black text-center mb-20 text-[#1A2A44]">{t.services.process_title}</h2>
+           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+              {t.services.process_steps.map((step, i) => (
+                <div key={i} className="warm-card p-12 rounded-[50px] relative overflow-hidden group">
+                  <div className="text-[120px] font-black text-[#D4AF37]/5 absolute -right-6 -bottom-10 select-none group-hover:text-[#D4AF37]/10 transition-all">0{i+1}</div>
+                  <div className="relative z-10">
+                    <div className="w-12 h-12 bg-[#1A2A44] text-white rounded-2xl flex items-center justify-center text-[16px] font-black mb-10 shadow-xl group-hover:scale-110 transition-transform">0{i+1}</div>
+                    <h3 className="font-black text-[19px] mb-5 text-balance leading-tight">{step.title}</h3>
+                    <p className="text-[14px] text-[#1A2A44]/60 leading-relaxed font-medium">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
            </div>
+        </div>
 
-           {/* Vehicles Detail */}
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-             <div className="md:order-2 space-y-8">
-               <h2 className="text-[36px] font-bold tracking-tight">{t.services.items.cars.title}</h2>
-               <div className="text-[16px] text-black/60 leading-relaxed space-y-4 font-medium">
-                  <p>From luxury sedans to heavy-duty construction excavators. Every vehicle undergoes a 150-point inspection by certified mechanics.</p>
-                  <ul className="space-y-2">
-                    <li className="flex items-center space-x-3"><span className="w-1.5 h-1.5 bg-black rounded-full"></span> <span>Accident-free history verification</span></li>
-                    <li className="flex items-center space-x-3"><span className="w-1.5 h-1.5 bg-black rounded-full"></span> <span>Engine & Transmission stress tests</span></li>
-                    <li className="flex items-center space-x-3"><span className="w-1.5 h-1.5 bg-black rounded-full"></span> <span>Global shipping via Incheon Port</span></li>
-                  </ul>
-               </div>
-               <Link to="/contact" className="inline-block bg-black text-white px-8 py-3 rounded-full font-bold text-[14px] hover:bg-zinc-800 transition">Get Vehicle List</Link>
+        {/* AI Image Enhancement Tool - Feature Request Implementation */}
+        <div className="mb-48 bg-[#1A2A44] rounded-[60px] p-12 lg:p-24 text-white overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none bg-gradient-to-l from-[#D4AF37] to-transparent"></div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div className="relative">
+                    <span className="text-[#D4AF37] font-black text-[11px] uppercase tracking-widest mb-6 block">Innovation: Gemini 2.5 Powered</span>
+                    <h2 className="text-[40px] lg:text-[56px] font-black leading-none mb-10">Smart Image<br/>Inspection Tools</h2>
+                    <p className="text-[18px] text-white/50 mb-12 font-medium">Use our experimental AI tool to apply filters or enhance product photos for better presentation in your local market.</p>
+                    <div className="flex flex-col gap-4">
+                        <input 
+                            value={prompt} 
+                            onChange={(e) => setPrompt(e.target.value)} 
+                            placeholder="e.g. 'Add a retro filter' or 'Enhance details'" 
+                            className="bg-white/10 border border-white/20 px-8 py-5 rounded-2xl outline-none focus:border-[#D4AF37] transition text-white placeholder:text-white/20 font-bold"
+                        />
+                        <button 
+                            onClick={handleAIDemo}
+                            disabled={isProcessing}
+                            className="bg-[#D4AF37] text-white py-5 rounded-2xl font-black text-lg hover:shadow-2xl transition active:scale-95 disabled:opacity-50"
+                        >
+                            {isProcessing ? 'Processing...' : 'Apply AI Edit'}
+                        </button>
+                    </div>
+                </div>
+                <div className="relative aspect-square bg-white/5 rounded-[45px] overflow-hidden border border-white/10 p-4">
+                    <img 
+                        src={editingImage || serviceItemImages.tires} 
+                        className="w-full h-full object-cover rounded-[35px] transition-all duration-1000 shadow-2xl" 
+                        alt="AI Preview"
+                    />
+                    {isProcessing && <div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center font-black text-[#D4AF37] text-2xl">GEMINI PROCESSING...</div>}
+                </div>
+            </div>
+        </div>
+
+        {/* Service Items */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+           {Object.entries(t.services.items).map(([key, item]) => (
+             <div key={key} className="warm-card rounded-[60px] flex flex-col group overflow-hidden">
+                <div className="h-[300px] overflow-hidden">
+                   <img 
+                    src={serviceItemImages[key]} 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                    alt={item.title} 
+                    loading="lazy"
+                   />
+                </div>
+                <div className="p-14 flex flex-col flex-1">
+                  <div className="w-16 h-16 bg-[#1A2A44] text-white rounded-[24px] flex items-center justify-center mb-10 shadow-lg group-hover:bg-[#D4AF37] transition-all transform group-hover:rotate-6">
+                    <BrandLogo />
+                  </div>
+                  <h3 className="text-[28px] font-black mb-5">{item.title}</h3>
+                  <p className="text-[#1A2A44]/60 text-[17px] leading-relaxed mb-12 font-medium">{item.desc}</p>
+                  <div className="mt-auto pt-10 border-t border-[#1A2A44]/5 flex justify-between items-center">
+                     <div className="flex flex-col">
+                        <span className="text-[10px] font-black tracking-[0.2em] uppercase text-[#D4AF37]">Supply Policy</span>
+                        <span className="text-[15px] font-black text-[#1A2A44]">{t.services.moq}</span>
+                     </div>
+                     <Link to="/contact" className="bg-[#FAF9F6] border border-[#1A2A44]/10 px-10 py-3.5 rounded-full font-black text-[14px] hover:bg-[#1A2A44] hover:text-white transition-all shadow-sm active:scale-95">Inquire</Link>
+                  </div>
+                </div>
              </div>
-             <div className="md:order-1 rounded-[40px] overflow-hidden shadow-2xl">
-               <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop" alt="Premium Cars" className="w-full aspect-square object-cover" />
-             </div>
+           ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const BlogPage = ({ lang }: { lang: Language }) => {
+  const t = translations[lang];
+  return (
+    <div className="pt-28 pb-48 bg-[#FAF9F6]">
+      <div className="max-w-[1200px] mx-auto px-6">
+        <div className="text-center mb-36">
+           <span className="section-tag">Live Feed</span>
+           <h1 className="text-[56px] md:text-[80px] font-black tracking-tight mb-6 leading-none">{t.blog.title}</h1>
+           <p className="text-[22px] text-[#1A2A44]/40 font-medium">{t.blog.subtitle}</p>
+        </div>
+
+        <div className="mb-40">
+           <div className="flex justify-between items-end mb-16 border-b border-[#1A2A44]/10 pb-8">
+              <h2 className="text-[36px] font-black tracking-tight">{t.blog.sections.inventory}</h2>
+              <div className="flex items-center text-[13px] font-black text-green-600 uppercase tracking-widest bg-green-50 px-4 py-2 rounded-full">
+                <span className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-ping"></span>
+                LIVE UPDATED
+              </div>
+           </div>
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {[
+                "https://images.unsplash.com/photo-1544215891-ceb1ac432d97",
+                "https://images.unsplash.com/photo-1550355291-bbee04a92027",
+                "https://images.unsplash.com/photo-1581094288338-2314dddb7ec4"
+              ].map((img, i) => (
+                <div key={i} className="warm-card rounded-[55px] overflow-hidden group">
+                   <div className="aspect-[5/4] bg-slate-100 overflow-hidden">
+                      <img src={`${img}?auto=format&fit=crop&q=80&w=800`} className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" alt="Inventory Item" />
+                   </div>
+                   <div className="p-12">
+                      <div className="flex justify-between mb-6">
+                         <span className="text-[11px] font-black bg-[#FAF9F6] border border-[#D4AF37]/20 text-[#D4AF37] px-5 py-2 rounded-full uppercase">Verified A+</span>
+                         <span className="text-[12px] font-black text-[#1A2A44]/20 tracking-widest">ID: {2024001 + i}</span>
+                      </div>
+                      <h3 className="text-[24px] font-black mb-4">Stock ID: {keyNames[i]}</h3>
+                      <p className="text-[16px] text-[#1A2A44]/50 mb-10 font-medium">Available Inventory in Pyeongtaek Hub.</p>
+                      <button className="w-full bg-[#1A2A44] text-white py-5 rounded-[25px] font-black text-[16px] hover:shadow-2xl transition-all active:scale-95">Check Availability</button>
+                   </div>
+                </div>
+              ))}
+           </div>
+        </div>
+
+        <div className="bg-[#FAF9F6] border border-[#D4AF37]/10 rounded-[70px] p-12 lg:p-28 overflow-hidden relative shadow-sm">
+           <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none grayscale">
+              <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1500" className="w-full h-full object-cover" alt="Yard Background" />
+           </div>
+           <div className="relative z-10 max-w-[700px]">
+              <span className="section-tag">Massive Infrastructure</span>
+              <h2 className="text-[44px] md:text-[68px] font-black tracking-tight mb-10 leading-[1]">{t.blog.sections.tour}</h2>
+              <p className="text-[21px] text-[#1A2A44]/50 leading-relaxed mb-14 font-medium italic">"We manage 5,000 Pyeong of dedicated logistics space to ensure your containers are packed with absolute precision."</p>
+              <button className="bg-[#D4AF37] text-white px-14 py-6 rounded-full font-black text-xl hover:shadow-2xl transition-all hover:scale-105">Book Yard Tour</button>
            </div>
         </div>
       </div>
@@ -343,38 +405,79 @@ const ServicesPage = ({ lang }: { lang: Language }) => {
   );
 };
 
+const keyNames = ["Premium Tires", "Korean SUV Mix", "Excavator Heavy"];
+
 const AboutPage = ({ lang }: { lang: Language }) => {
   const t = translations[lang];
   return (
-    <div className="pt-28 bg-[#f5f5f7]">
-      <div className="max-w-[1200px] mx-auto px-6 pb-40">
-        <div className="text-center mb-32">
-          <h1 className="text-[48px] md:text-[72px] font-bold tracking-tight leading-[1.05]">{t.about.title}</h1>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-40">
-           <div className="bg-white p-12 rounded-[48px] shadow-sm border border-black/5">
-              <h2 className="text-[28px] font-bold mb-8">{t.about.story_title}</h2>
-              <div className="text-[17px] text-black/60 leading-relaxed space-y-6 font-medium">
-                 {t.about.story_content.split('.').map((p, i) => p.trim() && <p key={i}>{p}.</p>)}
+    <div className="pt-28 bg-[#FAF9F6]">
+      <div className="max-w-[1200px] mx-auto px-6 pb-48">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-center mb-48">
+           <div className="order-2 lg:order-1">
+              <span className="section-tag">Leadership</span>
+              <h1 className="text-[56px] md:text-[80px] font-black tracking-tight leading-[1] mb-14">{t.about.title}</h1>
+              <h2 className="text-[32px] font-black mb-10 text-[#D4AF37] leading-tight">{t.about.story_title}</h2>
+              <div className="text-[19px] text-[#1A2A44]/70 leading-relaxed space-y-10 font-medium">
+                 {t.about.story_content}
               </div>
            </div>
-           <div className="bg-black p-12 rounded-[48px] text-white flex flex-col justify-center">
-              <div className="text-blue-500 font-bold uppercase text-[12px] tracking-widest mb-4">Our Vision</div>
-              <p className="text-[32px] font-bold tracking-tight leading-tight">{t.about.mission_content}</p>
+           <div className="order-1 lg:order-2 rounded-[70px] overflow-hidden shadow-3xl h-[600px] lg:h-[800px] relative border-[12px] border-white group">
+              <img 
+                src="https://images.unsplash.com/photo-1519085115968-39902309a797?auto=format&fit=crop&q=80&w=1000" 
+                className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" 
+                alt="CEO Onion" 
+              />
+              <div className="absolute bottom-12 left-12 bg-white/90 backdrop-blur-xl p-10 rounded-[40px] shadow-2xl">
+                 <div className="text-[12px] font-black text-[#D4AF37] tracking-[0.3em] mb-2 uppercase">Representative CEO</div>
+                 <div className="text-[28px] font-black text-[#1A2A44]">Captain Lee (Onion)</div>
+                 <p className="text-[14px] font-bold text-[#1A2A44]/40 mt-2 italic">Former ROK Air Force Captain</p>
+              </div>
            </div>
         </div>
-
-        <div className="text-center mb-16">
-          <h3 className="text-[32px] font-bold tracking-tight mb-20">{t.about.expertise_title}</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div className="bg-white rounded-[70px] p-12 lg:p-32 shadow-sm border border-[#D4AF37]/5 mb-48 text-center">
+           <h3 className="text-[42px] font-black tracking-tight mb-28">{t.about.expertise_title}</h3>
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             {t.about.expertise_list.map((exp, i) => (
-              <div key={i} className="bg-white p-8 rounded-[32px] border border-black/5 text-left group hover:bg-black hover:text-white transition-colors duration-500">
-                <div className="w-10 h-10 bg-[#f5f5f7] rounded-lg flex items-center justify-center mb-6 text-[14px] font-bold text-black group-hover:bg-white/10 group-hover:text-white">0{i+1}</div>
-                <p className="text-[15px] font-bold leading-relaxed">{exp}</p>
+              <div key={i} className="flex flex-col items-center group">
+                <div className="w-20 h-20 bg-[#FAF9F6] text-[#D4AF37] rounded-[30px] flex items-center justify-center mb-10 text-[24px] font-black group-hover:bg-[#1A2A44] group-hover:text-white transition-all duration-700 shadow-sm border border-[#D4AF37]/10">0{i+1}</div>
+                <p className="text-[19px] font-black leading-tight px-6">{exp}</p>
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Gallery Optimized */}
+        <div className="mb-48">
+           <div className="text-center mb-28">
+              <span className="section-tag">Infrastructure</span>
+              <h2 className="text-[44px] md:text-[68px] font-black tracking-tight">5,000 Pyeong Hub</h2>
+              <p className="mt-8 text-[21px] text-[#1A2A44]/40 font-medium max-w-[800px] mx-auto">Take a visual tour of our nationwide network and dedicated logistics center in Pyeongtaek.</p>
+           </div>
+           
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { url: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d", title: "Global Logistics Hub", span: "md:col-span-2 md:row-span-2" },
+                { url: "https://images.unsplash.com/photo-1590674899484-d5640e854abe", title: "Inspection Zone", span: "" },
+                { url: "https://images.unsplash.com/photo-1579412691525-2d7f939ff7a3", title: "Smart Inventory", span: "" },
+                { url: "https://images.unsplash.com/photo-1494412574743-0194849a6431", title: "Port Logistics", span: "md:col-span-3 h-[450px]" }
+              ].map((img, i) => (
+                <div key={i} className={`relative overflow-hidden rounded-[55px] group shadow-2xl ${img.span}`}>
+                   <img src={`${img.url}?auto=format&fit=crop&q=80&w=1500`} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt={img.title} />
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-12">
+                      <span className="text-[#D4AF37] font-black text-[11px] tracking-[0.3em] uppercase mb-2">Facility Section {i+1}</span>
+                      <h3 className="text-white font-black text-[26px] tracking-tight">{img.title}</h3>
+                   </div>
+                </div>
+              ))}
+           </div>
+        </div>
+
+        <div className="bg-[#1A2A44] rounded-[75px] p-16 lg:p-32 text-white text-center shadow-3xl relative overflow-hidden">
+           <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+           <h2 className="text-[36px] md:text-[56px] font-black tracking-tight mb-10 leading-none relative z-10">Expand Your Business Globally</h2>
+           <p className="text-[20px] text-white/50 mb-16 max-w-[700px] mx-auto font-medium relative z-10">Join our network of hundreds of global partners who trust our uncompromising standards.</p>
+           <Link to="/contact" className="bg-[#D4AF37] text-white px-16 py-6 rounded-full font-black text-xl hover:shadow-2xl transition-all hover:scale-105 active:scale-95 relative z-10 inline-block">Become Official Partner</Link>
         </div>
       </div>
     </div>
@@ -384,19 +487,22 @@ const AboutPage = ({ lang }: { lang: Language }) => {
 const FAQPage = ({ lang }: { lang: Language }) => {
   const f = faqs[lang];
   return (
-    <div className="pt-28 bg-white min-h-screen pb-40">
-      <div className="max-w-[800px] mx-auto px-6">
-        <div className="text-center mb-24">
-           <h1 className="text-[48px] font-bold tracking-tight">Questions. Answered.</h1>
+    <div className="pt-28 bg-[#FAF9F6] min-h-screen pb-48">
+      <div className="max-w-[900px] mx-auto px-6">
+        <div className="text-center mb-32">
+           <span className="section-tag">Resources</span>
+           <h1 className="text-[56px] md:text-[80px] font-black tracking-tight leading-none">Frequently<br/>Asked Questions</h1>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-8">
           {f.map((item, i) => (
-            <details key={i} className="group border-b border-black/5 pb-4">
-              <summary className="py-6 cursor-pointer list-none flex justify-between items-center text-[19px] font-bold text-black">
+            <details key={i} className="group warm-card rounded-[40px] overflow-hidden border border-[#D4AF37]/5">
+              <summary className="px-12 py-10 cursor-pointer list-none flex justify-between items-center text-[22px] font-black text-[#1A2A44] leading-tight">
                 {item.question}
-                <svg className="w-5 h-5 text-black/30 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                <div className="w-10 h-10 rounded-full border border-[#D4AF37]/20 flex items-center justify-center group-open:rotate-180 transition-transform bg-white shadow-sm">
+                  <svg className="w-5 h-5 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
+                </div>
               </summary>
-              <div className="pb-8 text-black/50 text-[16px] leading-relaxed font-medium">
+              <div className="px-12 pb-12 text-[#1A2A44]/50 text-[18px] leading-relaxed font-medium border-t border-[#1A2A44]/5 pt-8 mx-12 mb-4">
                 {item.answer}
               </div>
             </details>
@@ -410,47 +516,50 @@ const FAQPage = ({ lang }: { lang: Language }) => {
 const ContactPage = ({ lang }: { lang: Language }) => {
   const t = translations[lang];
   return (
-    <div className="pt-28 bg-[#f5f5f7] min-h-screen pb-40">
-       <div className="max-w-[1100px] mx-auto px-6">
-         <div className="text-center mb-20">
-           <h1 className="text-[48px] md:text-[64px] font-bold tracking-tight mb-4">{t.contact.title}</h1>
-           <p className="text-[21px] text-black/40 font-medium">{t.contact.subtitle}</p>
+    <div className="pt-28 bg-[#FAF9F6] min-h-screen pb-48">
+       <div className="max-w-[1200px] mx-auto px-6">
+         <div className="text-center mb-36">
+           <span className="section-tag">Partnership</span>
+           <h1 className="text-[56px] md:text-[88px] font-black tracking-tight mb-6 leading-none">{t.contact.title}</h1>
+           <p className="text-[24px] text-[#1A2A44]/40 font-medium max-w-[700px] mx-auto">{t.contact.subtitle}</p>
          </div>
 
-         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            <div className="lg:col-span-5 space-y-6">
-               <div className="bg-white p-8 rounded-[32px] border border-black/5">
-                  <div className="text-[12px] font-bold text-black/30 uppercase tracking-widest mb-2">Global Inquiry</div>
-                  <div className="text-[19px] font-bold">tjdgus5362@naver.com</div>
+         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            <div className="lg:col-span-5 space-y-10">
+               <div className="warm-card p-12 rounded-[50px]">
+                  <div className="text-[12px] font-black text-[#D4AF37] uppercase tracking-[0.3em] mb-4">Email Inquiry</div>
+                  <div className="text-[24px] font-black break-words">onionsbusiness2@gmail.com</div>
                </div>
-               <div className="bg-white p-8 rounded-[32px] border border-black/5">
-                  <div className="text-[12px] font-bold text-black/30 uppercase tracking-widest mb-2">Messenger</div>
-                  <div className="text-[19px] font-bold">WhatsApp: +82 10-5362-XXXX</div>
+               <div className="warm-card p-12 rounded-[50px]">
+                  <div className="text-[12px] font-black text-[#D4AF37] uppercase tracking-[0.3em] mb-4">WhatsApp Direct</div>
+                  <div className="text-[26px] font-black text-[#1A2A44]">+82 10-5772-5362</div>
                </div>
-               <div className="bg-black p-8 rounded-[32px] text-white">
-                  <div className="text-[12px] font-bold text-white/40 uppercase tracking-widest mb-2">Headquarters</div>
-                  <div className="text-[19px] font-bold">Pyeongtaek Global Logistic Center</div>
+               <div className="bg-[#1A2A44] p-12 lg:p-16 rounded-[60px] text-white shadow-3xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/20 rounded-full -translate-y-16 translate-x-16 blur-3xl group-hover:bg-[#D4AF37]/40 transition-all duration-700"></div>
+                  <div className="text-[12px] font-black text-white/40 uppercase tracking-[0.3em] mb-4">HQ & Logistics Hub</div>
+                  <div className="text-[26px] font-black mb-6">Pyeongtaek Hub<br/>(5,000 Pyeong)</div>
+                  <p className="text-white/40 text-[15px] font-bold leading-relaxed">Direct site visits available upon appointment for verified buyers.</p>
                </div>
             </div>
 
             <div className="lg:col-span-7">
-               <div className="bg-white p-12 rounded-[40px] shadow-2xl border border-black/5">
-                  <form className="space-y-8" onSubmit={(e) => {e.preventDefault(); alert("Inquiry Submitted.");}}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                       <div>
-                         <label className="block text-[13px] font-bold mb-3 text-black/40 uppercase tracking-widest">{t.contact.form_name}</label>
-                         <input type="text" className="w-full border-b border-black/10 py-3 outline-none focus:border-black transition bg-transparent" placeholder="John Doe" required />
+               <div className="bg-white p-12 lg:p-20 rounded-[75px] shadow-3xl border border-[#D4AF37]/5">
+                  <form className="space-y-12" onSubmit={(e) => {e.preventDefault(); alert("Inquiry Submitted to Captain Onion.");}}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                       <div className="relative group">
+                         <label className="block text-[11px] font-black mb-5 text-[#D4AF37] uppercase tracking-[0.2em]">{t.contact.form_name}</label>
+                         <input type="text" className="w-full border-b-2 border-[#1A2A44]/10 py-5 outline-none focus:border-[#D4AF37] transition-all bg-transparent text-[20px] font-black placeholder:text-[#1A2A44]/10" placeholder="Full Name / Brand" required />
                        </div>
-                       <div>
-                         <label className="block text-[13px] font-bold mb-3 text-black/40 uppercase tracking-widest">{t.contact.form_email}</label>
-                         <input type="email" className="w-full border-b border-black/10 py-3 outline-none focus:border-black transition bg-transparent" placeholder="email@example.com" required />
+                       <div className="relative group">
+                         <label className="block text-[11px] font-black mb-5 text-[#D4AF37] uppercase tracking-[0.2em]">{t.contact.form_email}</label>
+                         <input type="email" className="w-full border-b-2 border-[#1A2A44]/10 py-5 outline-none focus:border-[#D4AF37] transition-all bg-transparent text-[20px] font-black placeholder:text-[#1A2A44]/10" placeholder="email@domain.com" required />
                        </div>
                     </div>
-                    <div>
-                      <label className="block text-[13px] font-bold mb-3 text-black/40 uppercase tracking-widest">{t.contact.form_message}</label>
-                      <textarea rows={4} className="w-full border-b border-black/10 py-3 outline-none focus:border-black transition bg-transparent resize-none" placeholder="Item details, Qty, Destination..." required></textarea>
+                    <div className="relative group">
+                      <label className="block text-[11px] font-black mb-5 text-[#D4AF37] uppercase tracking-[0.2em]">{t.contact.form_message}</label>
+                      <textarea rows={5} className="w-full border-b-2 border-[#1A2A44]/10 py-5 outline-none focus:border-[#D4AF37] transition-all bg-transparent resize-none text-[20px] font-black placeholder:text-[#1A2A44]/10" placeholder="Items, Qty, Port..." required></textarea>
                     </div>
-                    <button type="submit" className="w-full bg-black text-white py-5 rounded-full font-bold text-[17px] hover:bg-zinc-800 transition shadow-xl active:scale-95">
+                    <button type="submit" className="w-full bg-[#1A2A44] text-white py-8 rounded-full font-black text-[22px] hover:shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl">
                       {t.contact.form_submit}
                     </button>
                   </form>
@@ -478,19 +587,19 @@ const App = () => {
   return (
     <HashRouter>
       <ScrollToTop />
-      <div className="min-h-screen flex flex-col selection:bg-black selection:text-white">
+      <div className="min-h-screen flex flex-col selection:bg-[#D4AF37] selection:text-white">
         <Navbar lang={lang} setLang={setLang} />
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<HomePage lang={lang} />} />
             <Route path="/services" element={<ServicesPage lang={lang} />} />
             <Route path="/about" element={<AboutPage lang={lang} />} />
+            <Route path="/blog" element={<BlogPage lang={lang} />} />
             <Route path="/faq" element={<FAQPage lang={lang} />} />
             <Route path="/contact" element={<ContactPage lang={lang} />} />
           </Routes>
         </main>
         <Footer lang={lang} />
-        <ChatAssistant lang={lang} />
       </div>
     </HashRouter>
   );

@@ -1,11 +1,17 @@
 
-export type Language = 'ko' | 'en' | 'jp' | 'es';
+export type Language = 'ko' | 'en' | 'jp' | 'es' | 'zh';
+
+export interface ProcessStep {
+  title: string;
+  desc: string;
+}
 
 export interface TranslationSet {
   nav: {
     home: string;
     services: string;
     about: string;
+    blog: string;
     contact: string;
     faq: string;
   };
@@ -24,23 +30,24 @@ export interface TranslationSet {
     title: string;
     description: string;
     moq: string;
+    process_title: string;
+    process_steps: ProcessStep[];
     items: {
-      tires: {
-        title: string;
-        desc: string;
-      };
-      cars: {
-        title: string;
-        desc: string;
-      };
-      machinery: {
-        title: string;
-        desc: string;
-      };
-      others: {
-        title: string;
-        desc: string;
-      };
+      tires: { title: string; desc: string; };
+      cars: { title: string; desc: string; };
+      machinery: { title: string; desc: string; };
+      appliances: { title: string; desc: string; };
+      clothing: { title: string; desc: string; };
+    };
+  };
+  blog: {
+    title: string;
+    subtitle: string;
+    sections: {
+      yards: string;
+      inventory: string;
+      tour: string;
+      reviews: string;
     };
   };
   about: {
