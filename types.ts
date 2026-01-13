@@ -16,10 +16,23 @@ export interface TranslationSet {
     faq: string;
   };
   hero: {
+    tag: string;
     title: string;
     subtitle: string;
     cta: string;
     cta_whatsapp: string;
+    quote: string;
+    representative: string;
+  };
+  foundations: {
+    tag: string;
+    title: string;
+    items: {
+      military: { title: string; desc: string };
+      technical: { title: string; desc: string };
+      infrastructure: { title: string; desc: string };
+      network: { title: string; desc: string };
+    };
   };
   stats: {
     label1: string;
@@ -27,9 +40,11 @@ export interface TranslationSet {
     label3: string;
   };
   services: {
+    tag: string;
     title: string;
     description: string;
-    moq: string;
+    moq_label: string;
+    moq_value: string;
     process_title: string;
     process_steps: ProcessStep[];
     items: {
@@ -41,8 +56,11 @@ export interface TranslationSet {
     };
   };
   blog: {
+    tag: string;
     title: string;
     subtitle: string;
+    live_tag: string;
+    inventory_btn: string;
     sections: {
       yards: string;
       inventory: string;
@@ -51,6 +69,7 @@ export interface TranslationSet {
     };
   };
   about: {
+    tag: string;
     title: string;
     story_title: string;
     story_content: string;
@@ -58,8 +77,12 @@ export interface TranslationSet {
     mission_content: string;
     expertise_title: string;
     expertise_list: string[];
+    cta_title: string;
+    cta_desc: string;
+    cta_btn: string;
   };
   contact: {
+    tag: string;
     title: string;
     subtitle: string;
     form_name: string;

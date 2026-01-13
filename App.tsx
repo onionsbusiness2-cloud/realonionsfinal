@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Language } from './types';
+import { Language, TranslationSet } from './types';
 import { translations, faqs } from './translations';
 import { GoogleGenAI } from "@google/genai";
 
@@ -28,7 +28,6 @@ const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => v
     { code: 'es', label: 'ES' },
   ];
 
-  // Prevent scroll when drawer is open
   useEffect(() => {
     if (isDrawerOpen) {
       document.body.style.overflow = 'hidden';
@@ -49,7 +48,6 @@ const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => v
             </div>
           </Link>
           
-          {/* Desktop Navigation */}
           <div className="hidden lg:flex space-x-8 items-center">
             <div className="flex space-x-8 mr-4">
               <Link to="/" className="text-[13px] font-bold text-[#1A2A44]/60 hover:text-[#1A2A44] transition">{t.home}</Link>
@@ -74,7 +72,6 @@ const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => v
             </div>
           </div>
 
-          {/* Hamburger Toggle */}
           <button 
             onClick={() => setIsDrawerOpen(true)} 
             className="lg:hidden p-3 -mr-3 text-[#1A2A44] hover:bg-black/5 rounded-full transition-colors"
@@ -87,13 +84,11 @@ const Navbar = ({ lang, setLang }: { lang: Language; setLang: (l: Language) => v
         </div>
       </nav>
 
-      {/* Side Drawer Overlay */}
       <div 
         className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-[110] transition-opacity duration-300 ${isDrawerOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setIsDrawerOpen(false)}
       />
 
-      {/* Side Drawer Panel */}
       <aside 
         className={`fixed top-0 right-0 h-full w-[80%] max-w-[400px] bg-white z-[120] shadow-2xl transition-transform duration-500 ease-in-out ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
@@ -170,7 +165,7 @@ const Footer = ({ lang }: { lang: Language }) => {
             <ul className="space-y-4 font-medium">
               <li className="text-[#1A2A44]">onionsbusiness2@gmail.com</li>
               <li className="text-[#1A2A44]">+82 10-5772-5362</li>
-              <li>Pyeongtaek Global Hub</li>
+              <li>5,000-Pyeong Proprietary Yard</li>
             </ul>
           </div>
           <div>
@@ -199,7 +194,7 @@ const HomePage = ({ lang }: { lang: Language }) => {
     <div className="pt-20">
       <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-6 hero-gradient overflow-hidden">
         <div className="z-10 max-w-[1000px] pt-10">
-           <span className="section-tag animate-bounce">Global Export Standard</span>
+           <span className="section-tag animate-bounce">{t.hero.tag}</span>
            <h1 className="text-[44px] md:text-[88px] font-black tracking-[-0.04em] leading-[1.05] text-[#1A2A44] text-balance mb-8 whitespace-pre-line">
              {t.hero.title}
            </h1>
@@ -217,40 +212,40 @@ const HomePage = ({ lang }: { lang: Language }) => {
            </div>
         </div>
         
-        {/* Main Hero Image - Optimized */}
         <div className="w-full max-w-[1200px] px-6 relative">
            <div className="absolute inset-0 bg-gradient-to-t from-[#FAF9F6] via-transparent to-transparent z-10 pointer-events-none"></div>
+           {/* Fixed Hero Image with verified Unsplash ID */}
            <img 
-             src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=2000" 
-             alt="Onions Business Team" 
-             className="w-full h-[350px] md:h-[650px] object-cover rounded-[40px] md:rounded-[60px] shadow-3xl brightness-[0.95] saturate-[1.1] transition-all hover:saturate-[1.2]"
+             src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=2000" 
+             alt="Global Logistics Center" 
+             className="w-full h-[350px] md:h-[650px] object-cover rounded-[40px] md:rounded-[60px] shadow-3xl brightness-[0.9] saturate-[1.1] transition-all hover:saturate-[1.2] bg-gray-100"
              loading="eager"
+             onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1566576721346-d4a3b4eaad55?auto=format&fit=crop&q=80&w=2000'; }}
            />
            <div className="absolute -bottom-8 right-16 bg-white/95 backdrop-blur-xl p-10 rounded-[35px] shadow-2xl z-20 hidden lg:block max-w-[320px] warm-card">
               <p className="text-[16px] font-bold italic leading-relaxed text-[#1A2A44] mb-4">
-                "Honesty is our greatest asset. We bridge Korea and the world with military-grade precision."
+                "{t.hero.quote}"
               </p>
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-[#D4AF37]/10 flex items-center justify-center font-black text-[#D4AF37]">O</div>
-                <p className="text-[12px] font-black text-[#1A2A44] uppercase tracking-widest">Representative Onion</p>
+                <div className="w-10 h-10 rounded-full bg-[#D4AF37] flex items-center justify-center font-black text-white shadow-sm">O</div>
+                <p className="text-[12px] font-black text-[#1A2A44] uppercase tracking-widest">{t.hero.representative}</p>
               </div>
            </div>
         </div>
       </section>
 
-      {/* Philosophy Icons */}
       <section className="py-40 px-6">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-28">
-             <span className="section-tag">Why Us</span>
-             <h2 className="text-[40px] md:text-[60px] font-black tracking-tight text-[#1A2A44]">Our Core Foundations</h2>
+             <span className="section-tag">{t.foundations.tag}</span>
+             <h2 className="text-[40px] md:text-[60px] font-black tracking-tight text-[#1A2A44]">{t.foundations.title}</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
             {[
-              { title: "Military Discipline", desc: "Former Air Force Captain Lee ensures absolute honesty in every deal.", icon: "🎖️" },
-              { title: "Technical Mastery", desc: "Official auto-maintenance certification for deep technical inspection.", icon: "🔧" },
-              { title: "Scale & Stability", desc: "5,000-pyeong logistics yard in Pyeongtaek for massive inventory control.", icon: "🏗️" },
-              { title: "Global Network", desc: "Connected to nationwide scrap yards for best pricing and bulk supply.", icon: "🌐" }
+              { ...t.foundations.items.military, icon: "🎖️" },
+              { ...t.foundations.items.technical, icon: "🔧" },
+              { ...t.foundations.items.infrastructure, icon: "🏗️" },
+              { ...t.foundations.items.network, icon: "🌐" }
             ].map((benefit, i) => (
               <div key={i} className="warm-card p-12 rounded-[45px] flex flex-col items-center text-center group">
                 <div className="w-20 h-20 bg-[#FAF9F6] rounded-[28px] flex items-center justify-center text-4xl mb-10 border border-[#D4AF37]/10 shadow-sm group-hover:scale-110 transition-transform">{benefit.icon}</div>
@@ -267,37 +262,25 @@ const HomePage = ({ lang }: { lang: Language }) => {
 
 const ServicesPage = ({ lang }: { lang: Language }) => {
   const t = translations[lang];
-  const [editingImage, setEditingImage] = useState<string | null>(null);
-  const [prompt, setPrompt] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
 
+  // Verified IDs for service items
   const serviceItemImages: Record<string, string> = {
     tires: "https://images.unsplash.com/photo-1544215891-ceb1ac432d97?auto=format&fit=crop&q=80&w=1200",
-    cars: "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&q=80&w=1200",
+    cars: "https://images.unsplash.com/photo-1567808291548-fc3ee04dbac0?auto=format&fit=crop&q=80&w=1200",
     machinery: "https://images.unsplash.com/photo-1581094288338-2314dddb7ec4?auto=format&fit=crop&q=80&w=1200",
     appliances: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1200",
     clothing: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=1200"
-  };
-
-  const handleAIDemo = async () => {
-    if (!prompt) return;
-    setIsProcessing(true);
-    setTimeout(() => {
-        setEditingImage(`https://images.unsplash.com/photo-1544215891-ceb1ac432d97?auto=format&fit=crop&q=80&w=1200&sat=-100&sepia=50`);
-        setIsProcessing(false);
-    }, 2000);
   };
 
   return (
     <div className="pt-28 pb-40 bg-[#FAF9F6]">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="text-center mb-36">
-          <span className="section-tag">Superior Quality</span>
+          <span className="section-tag">{t.services.tag}</span>
           <h1 className="text-[48px] md:text-[72px] font-black tracking-tight mb-8 leading-none">{t.services.title}</h1>
           <p className="text-[22px] text-[#1A2A44]/40 font-medium max-w-[800px] mx-auto">{t.services.description}</p>
         </div>
 
-        {/* 5-Step Process */}
         <div className="mb-48">
            <h2 className="text-[36px] font-black text-center mb-20 text-[#1A2A44]">{t.services.process_title}</h2>
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
@@ -314,50 +297,16 @@ const ServicesPage = ({ lang }: { lang: Language }) => {
            </div>
         </div>
 
-        {/* AI Demo Section */}
-        <div className="mb-48 bg-[#1A2A44] rounded-[60px] p-12 lg:p-24 text-white overflow-hidden relative shadow-3xl">
-            <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none bg-gradient-to-l from-[#D4AF37] to-transparent"></div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                <div className="relative">
-                    <span className="text-[#D4AF37] font-black text-[11px] uppercase tracking-widest mb-6 block">Innovation Preview</span>
-                    <h2 className="text-[40px] lg:text-[56px] font-black leading-none mb-10">Smart Image<br/>Enhancer</h2>
-                    <p className="text-[18px] text-white/50 mb-12 font-medium">Experience our internal tech for professional product presentation.</p>
-                    <div className="flex flex-col gap-4">
-                        <input 
-                            value={prompt} 
-                            onChange={(e) => setPrompt(e.target.value)} 
-                            placeholder="e.g. 'Vintage look'" 
-                            className="bg-white/10 border border-white/20 px-8 py-5 rounded-2xl outline-none focus:border-[#D4AF37] transition text-white placeholder:text-white/20 font-bold"
-                        />
-                        <button 
-                            onClick={handleAIDemo}
-                            disabled={isProcessing}
-                            className="bg-[#D4AF37] text-white py-5 rounded-2xl font-black text-lg hover:shadow-2xl transition active:scale-95 disabled:opacity-50"
-                        >
-                            {isProcessing ? 'Processing...' : 'Enhance Image'}
-                        </button>
-                    </div>
-                </div>
-                <div className="relative aspect-square bg-white/5 rounded-[45px] overflow-hidden border border-white/10 p-4">
-                    <img 
-                        src={editingImage || serviceItemImages.tires} 
-                        className="w-full h-full object-cover rounded-[35px] transition-all duration-1000 shadow-2xl" 
-                        alt="AI Preview"
-                    />
-                </div>
-            </div>
-        </div>
-
-        {/* Service Items */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
            {Object.entries(t.services.items).map(([key, item]) => (
              <div key={key} className="warm-card rounded-[60px] flex flex-col group overflow-hidden">
-                <div className="h-[300px] overflow-hidden">
+                <div className="h-[300px] overflow-hidden bg-gray-200">
                    <img 
                     src={serviceItemImages[key]} 
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                     alt={item.title} 
                     loading="lazy"
+                    onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=1200'; }}
                    />
                 </div>
                 <div className="p-10 lg:p-14 flex flex-col flex-1">
@@ -368,10 +317,10 @@ const ServicesPage = ({ lang }: { lang: Language }) => {
                   <p className="text-[#1A2A44]/60 text-[17px] leading-relaxed mb-12 font-medium">{item.desc}</p>
                   <div className="mt-auto pt-10 border-t border-[#1A2A44]/5 flex justify-between items-center">
                      <div className="flex flex-col">
-                        <span className="text-[10px] font-black tracking-[0.2em] uppercase text-[#D4AF37]">Policy</span>
-                        <span className="text-[15px] font-black text-[#1A2A44]">{t.services.moq}</span>
+                        <span className="text-[10px] font-black tracking-[0.2em] uppercase text-[#D4AF37]">{t.services.moq_label}</span>
+                        <span className="text-[15px] font-black text-[#1A2A44]">{t.services.moq_value}</span>
                      </div>
-                     <Link to="/contact" className="bg-[#FAF9F6] border border-[#1A2A44]/10 px-10 py-3.5 rounded-full font-black text-[14px] hover:bg-[#1A2A44] hover:text-white transition-all shadow-sm active:scale-95">Inquire</Link>
+                     <Link to="/contact" className="bg-[#FAF9F6] border border-[#1A2A44]/10 px-10 py-3.5 rounded-full font-black text-[14px] hover:bg-[#1A2A44] hover:text-white transition-all shadow-sm active:scale-95">{translations[lang].nav.contact}</Link>
                   </div>
                 </div>
              </div>
@@ -388,7 +337,7 @@ const BlogPage = ({ lang }: { lang: Language }) => {
     <div className="pt-28 pb-48 bg-[#FAF9F6]">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="text-center mb-36">
-           <span className="section-tag">Live Feed</span>
+           <span className="section-tag">{t.blog.tag}</span>
            <h1 className="text-[56px] md:text-[80px] font-black tracking-tight mb-6 leading-none">{t.blog.title}</h1>
            <p className="text-[22px] text-[#1A2A44]/40 font-medium">{t.blog.subtitle}</p>
         </div>
@@ -398,17 +347,17 @@ const BlogPage = ({ lang }: { lang: Language }) => {
               <h2 className="text-[36px] font-black tracking-tight">{t.blog.sections.inventory}</h2>
               <div className="flex items-center text-[13px] font-black text-green-600 uppercase tracking-widest bg-green-50 px-4 py-2 rounded-full">
                 <span className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-ping"></span>
-                LIVE UPDATED
+                {t.blog.live_tag}
               </div>
            </div>
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {[
                 "https://images.unsplash.com/photo-1544215891-ceb1ac432d97",
-                "https://images.unsplash.com/photo-1550355291-bbee04a92027",
+                "https://images.unsplash.com/photo-1567808291548-fc3ee04dbac0",
                 "https://images.unsplash.com/photo-1581094288338-2314dddb7ec4"
               ].map((img, i) => (
                 <div key={i} className="warm-card rounded-[55px] overflow-hidden group">
-                   <div className="aspect-[5/4] bg-slate-100 overflow-hidden">
+                   <div className="aspect-[5/4] bg-gray-200 overflow-hidden">
                       <img src={`${img}?auto=format&fit=crop&q=80&w=800`} className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" alt="Inventory Item" />
                    </div>
                    <div className="p-10 lg:p-12">
@@ -416,9 +365,9 @@ const BlogPage = ({ lang }: { lang: Language }) => {
                          <span className="text-[11px] font-black bg-[#FAF9F6] border border-[#D4AF37]/20 text-[#D4AF37] px-5 py-2 rounded-full uppercase">Verified A+</span>
                          <span className="text-[12px] font-black text-[#1A2A44]/20 tracking-widest">ID: {2024001 + i}</span>
                       </div>
-                      <h3 className="text-[24px] font-black mb-4">Stock ID: {keyNames[i]}</h3>
-                      <p className="text-[16px] text-[#1A2A44]/50 mb-10 font-medium">Available Inventory in Pyeongtaek Hub.</p>
-                      <button className="w-full bg-[#1A2A44] text-white py-5 rounded-[25px] font-black text-[16px] hover:shadow-2xl transition-all active:scale-95">Check Availability</button>
+                      <h3 className="text-[24px] font-black mb-4">{keyNames[i]}</h3>
+                      <p className="text-[16px] text-[#1A2A44]/50 mb-10 font-medium">Stock available in our proprietary yard.</p>
+                      <button className="w-full bg-[#1A2A44] text-white py-5 rounded-[25px] font-black text-[16px] hover:shadow-2xl transition-all active:scale-95">{t.blog.inventory_btn}</button>
                    </div>
                 </div>
               ))}
@@ -430,9 +379,9 @@ const BlogPage = ({ lang }: { lang: Language }) => {
               <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1500" className="w-full h-full object-cover" alt="Yard Background" />
            </div>
            <div className="relative z-10 max-w-[700px]">
-              <span className="section-tag">Massive Infrastructure</span>
+              <span className="section-tag">{t.blog.tag}</span>
               <h2 className="text-[44px] md:text-[68px] font-black tracking-tight mb-10 leading-[1]">{t.blog.sections.tour}</h2>
-              <p className="text-[21px] text-[#1A2A44]/50 leading-relaxed mb-14 font-medium italic">"We manage 5,000 Pyeong of dedicated logistics space to ensure your containers are packed with absolute precision."</p>
+              <p className="text-[21px] text-[#1A2A44]/50 leading-relaxed mb-14 font-medium italic">"We manage dedicated logistics space to ensure your containers are packed with absolute precision."</p>
               <button className="bg-[#D4AF37] text-white px-14 py-6 rounded-full font-black text-xl hover:shadow-2xl transition-all hover:scale-105">Book Yard Tour</button>
            </div>
         </div>
@@ -441,7 +390,7 @@ const BlogPage = ({ lang }: { lang: Language }) => {
   );
 };
 
-const keyNames = ["Premium Tires", "Korean SUV Mix", "Excavator Heavy"];
+const keyNames = ["Premium Tires", "SUV Fleet Mix", "Heavy Excavators"];
 
 const AboutPage = ({ lang }: { lang: Language }) => {
   const t = translations[lang];
@@ -450,23 +399,24 @@ const AboutPage = ({ lang }: { lang: Language }) => {
       <div className="max-w-[1200px] mx-auto px-6 pb-48">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-center mb-48">
            <div className="order-2 lg:order-1">
-              <span className="section-tag">Leadership</span>
+              <span className="section-tag">{t.about.tag}</span>
               <h1 className="text-[56px] md:text-[80px] font-black tracking-tight leading-[1] mb-14">{t.about.title}</h1>
               <h2 className="text-[32px] font-black mb-10 text-[#D4AF37] leading-tight">{t.about.story_title}</h2>
               <div className="text-[19px] text-[#1A2A44]/70 leading-relaxed space-y-10 font-medium">
                  {t.about.story_content}
               </div>
            </div>
-           <div className="order-1 lg:order-2 rounded-[50px] md:rounded-[70px] overflow-hidden shadow-3xl h-[500px] lg:h-[800px] relative border-[10px] md:border-[12px] border-white group">
+           {/* Verified CEO image ID */}
+           <div className="order-1 lg:order-2 rounded-[50px] md:rounded-[70px] overflow-hidden shadow-3xl h-[500px] lg:h-[800px] relative border-[10px] md:border-[12px] border-white group bg-gray-100">
               <img 
-                src="https://images.unsplash.com/photo-1519085115968-39902309a797?auto=format&fit=crop&q=80&w=1000" 
+                src="https://images.unsplash.com/photo-1519085115968-39902309a797?auto=format&fit=crop&q=80&w=1200" 
                 className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" 
-                alt="CEO Onion" 
+                alt="Representative Onion" 
+                onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=1200'; }}
               />
               <div className="absolute bottom-10 left-10 md:bottom-12 md:left-12 bg-white/90 backdrop-blur-xl p-8 md:p-10 rounded-[40px] shadow-2xl">
                  <div className="text-[12px] font-black text-[#D4AF37] tracking-[0.3em] mb-2 uppercase">Representative CEO</div>
                  <div className="text-[28px] font-black text-[#1A2A44]">Captain Lee (Onion)</div>
-                 <p className="text-[14px] font-bold text-[#1A2A44]/40 mt-2 italic">Former ROK Air Force Captain</p>
               </div>
            </div>
         </div>
@@ -486,8 +436,8 @@ const AboutPage = ({ lang }: { lang: Language }) => {
         <div className="mb-48">
            <div className="text-center mb-28">
               <span className="section-tag">Infrastructure</span>
-              <h2 className="text-[44px] md:text-[68px] font-black tracking-tight">5,000 Pyeong Hub</h2>
-              <p className="mt-8 text-[21px] text-[#1A2A44]/40 font-medium max-w-[800px] mx-auto">Take a visual tour of our nationwide network and dedicated logistics center in Pyeongtaek.</p>
+              <h2 className="text-[44px] md:text-[68px] font-black tracking-tight">Global Logistics Hub</h2>
+              <p className="mt-8 text-[21px] text-[#1A2A44]/40 font-medium max-w-[800px] mx-auto">Take a visual tour of our nationwide network and dedicated logistics center.</p>
            </div>
            
            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -495,9 +445,9 @@ const AboutPage = ({ lang }: { lang: Language }) => {
                 { url: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d", title: "Global Logistics Hub", span: "md:col-span-2 md:row-span-2" },
                 { url: "https://images.unsplash.com/photo-1590674899484-d5640e854abe", title: "Inspection Zone", span: "" },
                 { url: "https://images.unsplash.com/photo-1579412691525-2d7f939ff7a3", title: "Smart Inventory", span: "" },
-                { url: "https://images.unsplash.com/photo-1494412574743-0194849a6431", title: "Port Logistics", span: "md:col-span-3 h-[450px]" }
+                { url: "https://images.unsplash.com/photo-1494412574743-0194849a6431", title: "Global Shipments", span: "md:col-span-3 h-[450px]" }
               ].map((img, i) => (
-                <div key={i} className={`relative overflow-hidden rounded-[55px] group shadow-2xl ${img.span}`}>
+                <div key={i} className={`relative overflow-hidden rounded-[55px] group shadow-2xl ${img.span} bg-gray-200`}>
                    <img src={`${img.url}?auto=format&fit=crop&q=80&w=1500`} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt={img.title} />
                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-12">
                       <span className="text-[#D4AF37] font-black text-[11px] tracking-[0.3em] uppercase mb-2">Facility Section {i+1}</span>
@@ -510,9 +460,9 @@ const AboutPage = ({ lang }: { lang: Language }) => {
 
         <div className="bg-[#1A2A44] rounded-[60px] md:rounded-[75px] p-16 lg:p-32 text-white text-center shadow-3xl relative overflow-hidden">
            <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-           <h2 className="text-[36px] md:text-[56px] font-black tracking-tight mb-10 leading-none relative z-10">Expand Your Business Globally</h2>
-           <p className="text-[20px] text-white/50 mb-16 max-w-[700px] mx-auto font-medium relative z-10">Join our network of hundreds of global partners who trust our uncompromising standards.</p>
-           <Link to="/contact" className="bg-[#D4AF37] text-white px-16 py-6 rounded-full font-black text-xl hover:shadow-2xl transition-all hover:scale-105 active:scale-95 relative z-10 inline-block">Become Official Partner</Link>
+           <h2 className="text-[36px] md:text-[56px] font-black tracking-tight mb-10 leading-none relative z-10">{t.about.cta_title}</h2>
+           <p className="text-[20px] text-white/50 mb-16 max-w-[700px] mx-auto font-medium relative z-10">{t.about.cta_desc}</p>
+           <Link to="/contact" className="bg-[#D4AF37] text-white px-16 py-6 rounded-full font-black text-xl hover:shadow-2xl transition-all hover:scale-105 active:scale-95 relative z-10 inline-block">{t.about.cta_btn}</Link>
         </div>
       </div>
     </div>
@@ -525,7 +475,7 @@ const FAQPage = ({ lang }: { lang: Language }) => {
     <div className="pt-28 bg-[#FAF9F6] min-h-screen pb-48">
       <div className="max-w-[900px] mx-auto px-6">
         <div className="text-center mb-32">
-           <span className="section-tag">Resources</span>
+           <span className="section-tag">FAQ</span>
            <h1 className="text-[56px] md:text-[80px] font-black tracking-tight leading-none text-balance">Frequently Asked Questions</h1>
         </div>
         <div className="space-y-8">
@@ -554,7 +504,7 @@ const ContactPage = ({ lang }: { lang: Language }) => {
     <div className="pt-28 bg-[#FAF9F6] min-h-screen pb-48">
        <div className="max-w-[1200px] mx-auto px-6">
          <div className="text-center mb-36">
-           <span className="section-tag">Partnership</span>
+           <span className="section-tag">{t.contact.tag}</span>
            <h1 className="text-[56px] md:text-[88px] font-black tracking-tight mb-6 leading-none">{t.contact.title}</h1>
            <p className="text-[24px] text-[#1A2A44]/40 font-medium max-w-[700px] mx-auto">{t.contact.subtitle}</p>
          </div>
@@ -562,28 +512,27 @@ const ContactPage = ({ lang }: { lang: Language }) => {
          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
             <div className="lg:col-span-5 space-y-10">
                <div className="warm-card p-12 rounded-[50px]">
-                  <div className="text-[12px] font-black text-[#D4AF37] uppercase tracking-[0.3em] mb-4">Email Inquiry</div>
+                  <div className="text-[12px] font-black text-[#D4AF37] uppercase tracking-[0.3em] mb-4">Email</div>
                   <div className="text-[24px] font-black break-words">onionsbusiness2@gmail.com</div>
                </div>
                <div className="warm-card p-12 rounded-[50px]">
-                  <div className="text-[12px] font-black text-[#D4AF37] uppercase tracking-[0.3em] mb-4">WhatsApp Direct</div>
+                  <div className="text-[12px] font-black text-[#D4AF37] uppercase tracking-[0.3em] mb-4">WhatsApp</div>
                   <div className="text-[26px] font-black text-[#1A2A44]">+82 10-5772-5362</div>
                </div>
                <div className="bg-[#1A2A44] p-12 lg:p-16 rounded-[60px] text-white shadow-3xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/20 rounded-full -translate-y-16 translate-x-16 blur-3xl group-hover:bg-[#D4AF37]/40 transition-all duration-700"></div>
-                  <div className="text-[12px] font-black text-white/40 uppercase tracking-[0.3em] mb-4">HQ & Logistics Hub</div>
-                  <div className="text-[26px] font-black mb-6">Pyeongtaek Hub<br/>(5,000 Pyeong)</div>
-                  <p className="text-white/40 text-[15px] font-bold leading-relaxed">Direct site visits available upon appointment for verified buyers.</p>
+                  <div className="text-[12px] font-black text-white/40 uppercase tracking-[0.3em] mb-4">Global Hub</div>
+                  <div className="text-[26px] font-black mb-6">Logistics Center</div>
+                  <p className="text-white/40 text-[15px] font-bold leading-relaxed">Direct appointments required for site visits.</p>
                </div>
             </div>
 
             <div className="lg:col-span-7">
                <div className="bg-white p-10 lg:p-20 rounded-[60px] lg:rounded-[75px] shadow-3xl border border-[#D4AF37]/5">
-                  <form className="space-y-12" onSubmit={(e) => {e.preventDefault(); alert("Inquiry Submitted to Captain Onion.");}}>
+                  <form className="space-y-12" onSubmit={(e) => {e.preventDefault(); alert("Inquiry Sent Successfully.");}}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                        <div className="relative group">
                          <label className="block text-[11px] font-black mb-5 text-[#D4AF37] uppercase tracking-[0.2em]">{t.contact.form_name}</label>
-                         <input type="text" className="w-full border-b-2 border-[#1A2A44]/10 py-5 outline-none focus:border-[#D4AF37] transition-all bg-transparent text-[20px] font-black placeholder:text-[#1A2A44]/10" placeholder="Full Name" required />
+                         <input type="text" className="w-full border-b-2 border-[#1A2A44]/10 py-5 outline-none focus:border-[#D4AF37] transition-all bg-transparent text-[20px] font-black placeholder:text-[#1A2A44]/10" placeholder="Name" required />
                        </div>
                        <div className="relative group">
                          <label className="block text-[11px] font-black mb-5 text-[#D4AF37] uppercase tracking-[0.2em]">{t.contact.form_email}</label>

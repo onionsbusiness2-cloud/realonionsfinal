@@ -5,23 +5,38 @@ export const translations: Record<Language, TranslationSet> = {
   ko: {
     nav: { home: '홈', services: '서비스', about: '회사소개', blog: '블로그', contact: '문의하기', faq: 'FAQ' },
     hero: {
+      tag: '신뢰할 수 있는 한국 수출 파트너',
       title: '한국 중고 수출의 새로운 기준,\nOnions Business',
       subtitle: '공군 대위 출신의 정직함과 정비 전문가의 안목으로 전 세계 바이어에게 최상의 한국 제품을 공급합니다.',
       cta: '견적 문의하기',
-      cta_whatsapp: 'WhatsApp 상담'
+      cta_whatsapp: 'WhatsApp 상담',
+      quote: '정직은 우리의 가장 큰 자산입니다. 군사 수준의 정밀함으로 한국과 세계를 잇겠습니다.',
+      representative: '대표 어니언'
+    },
+    foundations: {
+      tag: '왜 어니언 비즈니스인가',
+      title: '우리의 핵심 역량',
+      items: {
+        military: { title: '군인 정신의 정직함', desc: '공군 대위 출신 이성현 대표가 모든 거래에서 타협 없는 정직함을 보장합니다.' },
+        technical: { title: '정비 전문가의 안목', desc: '국가 공인 자동차 정비 자격증을 바탕으로 기술적 완성도를 직접 검수합니다.' },
+        infrastructure: { title: '압도적 인프라', desc: '5,000평 규모의 대형 자체 야드를 통해 대량 물량을 안정적으로 공급합니다.' },
+        network: { title: '전국 단위 네트워크', desc: '전국 폐차장 및 옥션 네트워크를 통해 가장 경쟁력 있는 가격과 수량을 확보합니다.' }
+      }
     },
     stats: { label1: '검수 완료', label2: '수출 국가', label3: '고객 만족도' },
     services: {
+      tag: '최상의 품질',
       title: '전문 수출 서비스',
       description: '단순 대행을 넘어 검수, 매입, 물류까지 원스톱으로 해결합니다.',
-      moq: '최소 주문 수량: 컨테이너 단위',
+      moq_label: '공급 정책',
+      moq_value: '컨테이너 단위',
       process_title: '어니언 스탠다드 서비스 5단계',
       process_steps: [
-        { title: '1단계: 빠른 견적 & 맞춤 소싱', desc: '바이어 요청 즉시 견산. 전국 야드 네트워크를 활용해 타이어, 차량, 가전 등 최적의 재고를 24시간 내 확인합니다.' },
-        { title: '2단계: 철저한 품질 검수', desc: '5,000평 야드에서 전문가가 직접 검수합니다. 타이어 등급 분류 및 차량 엔진/외관 상태를 사진과 영상으로 공유합니다.' },
-        { title: '3단계: 수출 등록 & 서류 완벽 처리', desc: '자동차 말소등록부터 수출신고필증 발급까지 모든 행정 절차를 대행하여 바이어의 번거로움을 없앱니다.' },
-        { title: '4단계: 최적 선적 및 물류', desc: 'RORO선 또는 컨테이너 선적 중 최적의 배편을 확보합니다. 실시간 위치 추적으로 안전한 도착을 보장합니다.' },
-        { title: '5단계: 통관 지원 & A/S 보장', desc: '목적지 세관 통관 대행 지원 및 품질 클레임 발생 시 투명한 환불/재발송 정책으로 파트너십을 유지합니다.' }
+        { title: '1단계: 빠른 견적 & 맞춤 소싱', desc: '바이어 요청 즉시 견산. 전국 야드 네트워크를 활용해 최적의 재고를 24시간 내 확인합니다.' },
+        { title: '2단계: 철저한 품질 검수', desc: '5,000평 대형 야드에서 전문가가 직접 검수합니다. 타이어 등급 및 차량 상태를 사진과 영상으로 공유합니다.' },
+        { title: '3단계: 수출 등록 & 서류 처리', desc: '자동차 말소등록부터 수출신고필증 발급까지 모든 행정 절차를 완벽하게 대행합니다.' },
+        { title: '4단계: 최적 선적 및 물류', desc: 'RORO선 또는 컨테이너 선적 중 최적의 경로를 확보합니다. 실시간 위치 추적으로 안전을 보장합니다.' },
+        { title: '5단계: 통관 지원 & A/S 보장', desc: '목적지 세관 통관 지원 및 투명한 환불/재발송 정책으로 파트너십을 유지합니다.' }
       ],
       items: {
         tires: { title: '중고 타이어', desc: 'A/B/C 등급 정밀 분류 및 5년 이내 연식 보장.' },
@@ -32,8 +47,11 @@ export const translations: Record<Language, TranslationSet> = {
       }
     },
     blog: {
+      tag: '현장 실황',
       title: '현장 소식',
-      subtitle: '실시간 매물 정보와 5000평 야드의 생동감을 확인하세요.',
+      subtitle: '실시간 매물 정보와 5,000평 대형 야드의 생동감을 확인하세요.',
+      live_tag: '실시간 업데이트',
+      inventory_btn: '재고 확인하기',
       sections: {
         yards: '협력 폐차장 & 인프라',
         inventory: '실시간 추천 매물',
@@ -42,15 +60,20 @@ export const translations: Record<Language, TranslationSet> = {
       }
     },
     about: {
+      tag: '리더십',
       title: 'Onion의 철학',
       story_title: '정직한 군인 정신으로 세상을 잇다',
-      story_content: '공군 대위 출신 대표가 직접 발로 뜁니다. 불필요한 마진을 줄이고 고품질 한국 제품을 정직하게 공급하는 것이 저의 사명입니다. 5000평 규모의 야드와 정비 자격증을 보유한 전문가로서 타협 없는 품질을 약속합니다.',
+      story_content: '공군 대위 출신 대표가 직접 발로 뜁니다. 불필요한 마진을 줄이고 고품질 한국 제품을 정직하게 공급하는 것이 저의 사명입니다. 5,000평 규모의 대형 야드와 정비 자격증을 보유한 전문가로서 타협 없는 품질을 약속합니다.',
       mission_title: '미션 & 비전',
-      mission_content: '신뢰를 바탕으로 전 세계에 거점을 마련하여, 각 국가의 어려운 비즈니스 문제를 해결해주는 진정한 글로벌 파트너가 되겠습니다.',
+      mission_content: '신뢰를 바탕으로 전 세계에 거점을 마련하여 글로벌 파트너가 되겠습니다.',
       expertise_title: '핵심 역량',
-      expertise_list: ['5000평 규모 직영 야드 보유', '자동차 정비 자격증 보유', '관세/통관 전문 지식', '전국 폐차장/경매장 네트워크']
+      expertise_list: ['5,000평 규모 대형 직영 야드 보유', '자동차 정비 자격증 보유', '관세/통관 전문 지식', '전국 폐차장/경매장 네트워크'],
+      cta_title: '글로벌 비즈니스 확장',
+      cta_desc: '수백 명의 글로벌 파트너가 신뢰하는 어니언 비즈니스와 함께하세요.',
+      cta_btn: '공식 파트너 되기'
     },
     contact: {
+      tag: '파트너십',
       title: '글로벌 파트너십',
       subtitle: '품목, 수량, 목적지 항구를 남겨주시면 신속하게 견적을 드립니다.',
       form_name: '성함/회사명',
@@ -62,23 +85,38 @@ export const translations: Record<Language, TranslationSet> = {
   en: {
     nav: { home: 'Home', services: 'Services', about: 'About', blog: 'Blog', contact: 'Contact', faq: 'FAQ' },
     hero: {
+      tag: 'Trusted Korean Export Partner',
       title: 'New Standard in Korean Exports,\nOnions Business',
       subtitle: 'Led by a former Air Force Captain with mechanical expertise, delivering premium Korean goods to global buyers.',
       cta: 'Get a Quote',
-      cta_whatsapp: 'WhatsApp Chat'
+      cta_whatsapp: 'WhatsApp Chat',
+      quote: 'Honesty is our greatest asset. We bridge Korea and the world with military-grade precision.',
+      representative: 'Representative Onion'
+    },
+    foundations: {
+      tag: 'Why Us',
+      title: 'Our Core Foundations',
+      items: {
+        military: { title: 'Military Integrity', desc: 'Former Air Force Captain Lee ensures absolute honesty in every single deal.' },
+        technical: { title: 'Technical Mastery', desc: 'Official maintenance certification ensures professional-grade technical inspections.' },
+        infrastructure: { title: 'Massive Infrastructure', desc: 'Our large 5,000-pyeong proprietary yard guarantees stable large-scale supply.' },
+        network: { title: 'Nationwide Network', desc: 'Connected to nationwide scrap yards for best pricing and bulk availability.' }
+      }
     },
     stats: { label1: 'Inspected Items', label2: 'Countries', label3: 'Satisfaction' },
     services: {
+      tag: 'Superior Quality',
       title: 'Expert Export Services',
       description: 'Beyond simple agency, we provide one-stop solutions from inspection to logistics.',
-      moq: 'MOQ: Container Units',
+      moq_label: 'Supply Policy',
+      moq_value: 'Container Units',
       process_title: 'Onion Standard: 5-Step Process',
       process_steps: [
-        { title: 'Step 1: Fast Quote & Custom Sourcing', desc: 'Instant feedback on inquiries. We leverage our network to source the best tires, vehicles, and appliances within 24 hours.' },
-        { title: 'Step 2: Rigorous Quality Inspection', desc: 'Conducted at our 5,000-pyeong yard. We share detailed photos and videos of tire grades and engine performance.' },
-        { title: 'Step 3: Flawless Documentation', desc: 'We handle all administrative tasks, from vehicle deregistration to export declarations, ensuring a hassle-free process.' },
-        { title: 'Step 4: Optimal Shipment & Logistics', desc: 'Securing the best RORO or container routes. Real-time tracking ensures safe and timely global delivery.' },
-        { title: 'Step 5: Customs Support & Warranty', desc: 'Support with destination customs and a transparent refund/resend policy to ensure long-term partnerships.' }
+        { title: 'Step 1: Fast Quote & Custom Sourcing', desc: 'Instant feedback on inquiries. We source the best tires and vehicles within 24 hours.' },
+        { title: 'Step 2: Rigorous Quality Inspection', desc: 'Conducted at our own 5,000-pyeong large-scale yard. We share detailed photos and videos of all technical states.' },
+        { title: 'Step 3: Flawless Documentation', desc: 'We handle all administrative tasks, from deregistration to export declarations.' },
+        { title: 'Step 4: Optimal Shipment & Logistics', desc: 'Securing the best RORO or container routes with real-time tracking.' },
+        { title: 'Step 5: Customs Support & Warranty', desc: 'Support with destination customs and a transparent refund policy for long-term partnerships.' }
       ],
       items: {
         tires: { title: 'Used Tires', desc: 'Precise A/B/C grading and guaranteed under 5 years old.' },
@@ -89,8 +127,11 @@ export const translations: Record<Language, TranslationSet> = {
       }
     },
     blog: {
+      tag: 'Live Feed',
       title: 'Showcase',
-      subtitle: 'Live inventory and the massive 5,000-pyeong yard experience.',
+      subtitle: 'Live inventory and our massive 5,000-pyeong proprietary yard experience.',
+      live_tag: 'Live Updated',
+      inventory_btn: 'Check Availability',
       sections: {
         yards: 'Infrastructure & Networks',
         inventory: 'Live Inventory',
@@ -99,15 +140,20 @@ export const translations: Record<Language, TranslationSet> = {
       }
     },
     about: {
+      tag: 'Leadership',
       title: 'Philosophy',
-      story_title: 'Connecting World with Military Integrity',
-      story_content: 'As a former Air Force Captain, I value honesty above all. My mission is to provide high-quality Korean products at fair prices. With a 5,000-pyeong yard and technical certification, I promise uncompromising quality.',
+      story_title: 'Integrity Beyond Borders',
+      story_content: 'As a former Air Force Captain, I value honesty above all. My mission is to provide high-quality Korean products at fair prices with uncompromising quality through our 5,000-pyeong facility.',
       mission_title: 'Mission & Vision',
-      mission_content: 'To build a global presence rooted in trust, helping partners overcome local supply challenges.',
+      mission_content: 'To build a global presence rooted in trust, helping partners overcome supply challenges.',
       expertise_title: 'Key Strengths',
-      expertise_list: ['Owns 5,000-pyeong yard', 'Certified Mechanic', 'Customs Expertise', 'Nationwide Network']
+      expertise_list: ['Owns large 5,000-pyeong yard', 'Certified Mechanic', 'Customs Expertise', 'Nationwide Network'],
+      cta_title: 'Expand Globally',
+      cta_desc: 'Join our network of partners who trust our uncompromising standards.',
+      cta_btn: 'Become Partner'
     },
     contact: {
+      tag: 'Partnership',
       title: 'Global Partnership',
       subtitle: 'Provide item, quantity, and port for a fast quote.',
       form_name: 'Name/Company',
@@ -119,23 +165,38 @@ export const translations: Record<Language, TranslationSet> = {
   jp: {
     nav: { home: 'ホーム', services: 'サービス', about: '会社紹介', blog: 'ブログ', contact: 'お問い合わせ', faq: 'FAQ' },
     hero: {
+      tag: '信頼できる韓国輸出パートナー',
       title: '韓国輸出の新しい基準、\nOnions Business',
       subtitle: '元空軍大尉としての誠実さと整備専門家の確かな目で、世界中のバイヤーへ最高品質の韓国製品をお届けします。',
       cta: '見積もり依頼',
-      cta_whatsapp: 'WhatsApp相談'
+      cta_whatsapp: 'WhatsApp相談',
+      quote: '誠実さは私たちの最大の資産です。軍事レベルの精密さで、韓国と世界を繋ぎます。',
+      representative: '代表 オニオン'
+    },
+    foundations: {
+      tag: '選ばれる理由',
+      title: '私たちの核心的な強み',
+      items: {
+        military: { title: '軍人精神の誠実さ', desc: '元空軍大尉のイ・ソンヒョン代表が、すべての取引において妥協のない誠実さを保証します。' },
+        technical: { title: '整備専門家の技術力', desc: '国家公認の自動車整備士資格に基づき、技術的な完成度を直接検品します。' },
+        infrastructure: { title: '圧倒的なインフラ', desc: '5,000坪規模の自社ヤードを通じて、大量の物量を安定的に供給します。' },
+        network: { title: '全域ネットワーク', desc: '全国の解体業者やオークションネットワークを通じて、最も競争力のある価格を確保します。' }
+      }
     },
     stats: { label1: '検品済み', label2: '輸出先国', label3: '顧客満足度' },
     services: {
+      tag: '最高品質',
       title: '専門輸出サービス',
       description: '単なる代行を超え、検品、買収、物流までワンストップで解決します。',
-      moq: '最小注文数量: コンテナ単位',
-      process_title: 'オニオン・スタンダード5段階サービス',
+      moq_label: '供給ポリシー',
+      moq_value: 'コンテナ単位',
+      process_title: 'オ니オン・スタンダード5段階サービス',
       process_steps: [
-        { title: '1段階：迅速な見積もりと調達', desc: 'お問い合わせ後、24時間以内に全国のネットワークから最適なタイヤ、車両、家電などの在庫を確認し回答します。' },
-        { title: '2段階：徹底した品質検品', desc: '5,000坪の自社ヤードで専門家が直接検品。摩耗度やエンジン状態を写真と動画でバイヤーに共有します。' },
-        { title: '3段階：輸出登録と書類の完璧な処理', desc: '車両の抹消登録から輸出申告まで、すべての行政手続きを代行し、バイヤーの負担をゼロにします。' },
-        { title: '4段階：最適船積みと物流', desc: 'RORO船またはコンテナ船の最適なルートを確保。リアルタイムの追跡で安全な到着を保証します。' },
-        { title: '5段階：通関サポートとアフターサービス', desc: '目的地の通関支援および万が一の品質クレームにも透明性の高い返金・再発送ポリシーで対応します。' }
+        { title: '1段階：迅速な見積もり', desc: 'バイヤーの要請に即座に対応。24時間以内に全国のネットワークから最適な在庫を確認します。' },
+        { title: '2段階：徹底した品質検品', desc: '5,000坪の大規模ヤードで専門家が直接検品。写真と動画でバイヤーに詳細を共有します。' },
+        { title: '3段階：輸出登録と書類処理', desc: '車両の抹消登録から輸出申告まで、すべての行政手続きを完璧に代行します。' },
+        { title: '4段階：最適船積みと物流', desc: 'RORO船またはコンテナ船の最適なルートを確保。リアルタイム追跡で安全を保証します。' },
+        { title: '5段階：通関支援と保証', desc: '目的地での通関支援および透明な返金ポリシーにより、長期的なパートナーシップを維持します。' }
       ],
       items: {
         tires: { title: '中古タイヤ', desc: 'A/B/Cランク別の精密分類、5年以内の年式を保証。' },
@@ -146,8 +207,11 @@ export const translations: Record<Language, TranslationSet> = {
       }
     },
     blog: {
+      tag: 'ライブフィード',
       title: 'フィールドニュース',
-      subtitle: 'リアルタイムの在庫情報と5000坪ヤードの臨場感を確認してください。',
+      subtitle: 'リアルタイムの在庫情報と5,000坪大規模ヤードの臨場感を確認してください。',
+      live_tag: '更新済み',
+      inventory_btn: '在庫を確認する',
       sections: {
         yards: '協力解体業者 & インフラ',
         inventory: 'リアルタイムおすすめ商品',
@@ -156,17 +220,22 @@ export const translations: Record<Language, TranslationSet> = {
       }
     },
     about: {
-      title: 'Onionの哲学',
+      tag: 'リーダーシップ',
+      title: '哲学',
       story_title: '軍人精神で世界を繋ぐ',
-      story_content: '元空軍大尉の代表が自ら現場で動きます。不当な中間マージンを排除し、高品質な韓国製品を適正価格で提供することが私の使命です。',
-      mission_title: 'ミッション & ビジョン',
-      mission_content: '信頼をベースに世界中に拠点を構え、各国のビジネス課題を解決できるグローバルパートナーを目指します。',
+      story_content: '元空軍大尉の代表が自ら現場で動きます。不必要なマージンを省き、高品質な韓国製品を誠実にお届けします。5,000坪の自社ヤードを保有しています。',
+      mission_title: 'ミッション',
+      mission_content: '信頼を基盤に世界中に拠点を設け、グローバルパートナーとなることを目指します。',
       expertise_title: 'コアコンピタンス',
-      expertise_list: ['5000坪の自社ヤード保有', '自動車整備士資格保有', '通関に関する深い知識', '広範なネットワーク']
+      expertise_list: ['5,000坪の大規模自社ヤード', '整備士資格保有', '通関の専門知識', '全国ネットワーク'],
+      cta_title: 'ビジネスの拡大',
+      cta_desc: '妥協のない基準を信頼する数百のバイヤーと共に成長しましょう。',
+      cta_btn: 'パートナーになる'
     },
     contact: {
-      title: 'グローバルパートナーシップ',
-      subtitle: 'お名前、数量、目的港をご記入いただければ迅速に回答いたします。',
+      tag: 'パートナーシップ',
+      title: 'グローバル提携',
+      subtitle: '品目、数量、目的港をお知らせいただければ迅速に回答します。',
       form_name: 'お名前/会社名',
       form_email: 'メールアドレス',
       form_message: 'お問い合わせ内容',
@@ -176,23 +245,38 @@ export const translations: Record<Language, TranslationSet> = {
   es: {
     nav: { home: 'Inicio', services: 'Servicios', about: 'Nosotros', blog: 'Blog', contact: 'Contacto', faq: 'FAQ' },
     hero: {
+      tag: 'Socio de Exportación Coreano de Confianza',
       title: 'Nuevo Estándar en Exportaciones Coreanas,\nOnions Business',
       subtitle: 'Liderado por un ex capitán de la Fuerza Aérea con experiencia mecánica, entregando bienes coreanos premium.',
       cta: 'Cotizar',
-      cta_whatsapp: 'WhatsApp'
+      cta_whatsapp: 'WhatsApp',
+      quote: 'La honestidad is nuestro mayor activo. Unimos a Corea con el mundo con precisión militar.',
+      representative: 'Representante Onion'
+    },
+    foundations: {
+      tag: '¿Por qué nosotros?',
+      title: 'Nuestros Pilares Fundamentales',
+      items: {
+        military: { title: 'Integridad Militar', desc: 'El CEO Lee, ex capitán de la Fuerza Aérea, asegura honestidad absoluta en cada trato.' },
+        technical: { title: 'Maestría Técnica', desc: 'La certificación oficial de mantenimiento asegura inspecciones técnicas de nivel profesional.' },
+        infrastructure: { title: 'Infraestructura Masiva', desc: 'Nuestro patio de 5,000 pyeong de gran escala garantiza un suministro estable.' },
+        network: { title: 'Red Nacional', desc: 'Conectados con patios de desguace en todo el país para obtener los mejores precios.' }
+      }
     },
     stats: { label1: 'Inspeccionados', label2: 'Países', label3: 'Satisfacción' },
     services: {
+      tag: 'Calidad Superior',
       title: 'Servicios de Exportación',
       description: 'Más que una agencia, brindamos soluciones integrales desde inspección hasta logística.',
-      moq: 'MOQ: Unidades de Contenedor',
+      moq_label: 'Política',
+      moq_value: 'Unidades de Contenedor',
       process_title: 'Estándar Onion: Proceso de 5 Pasos',
       process_steps: [
-        { title: 'Paso 1: Cotización Rápida', desc: 'Respuesta inmediata a consultas. Buscamos el mejor inventario de llantas y vehículos en menos de 24 horas.' },
-        { title: 'Paso 2: Inspección de Calidad', desc: 'Realizada en nuestro patio de 5,000 pyeong. Compartimos fotos y videos detallados de cada ítem.' },
-        { title: 'Paso 3: Documentación Perfecta', desc: 'Gestionamos todos los trámites administrativos, desde la baja del vehículo hasta la declaración de exportación.' },
-        { title: 'Paso 4: Envío y Logística Óptima', desc: 'Aseguramos las mejores rutas de RORO o contenedores con seguimiento en tiempo real.' },
-        { title: 'Paso 5: Soporte de Aduanas y Garantía', desc: 'Apoyo en aduanas de destino y política de reembolso transparente para asegurar asociaciones a largo plazo.' }
+        { title: 'Paso 1: Cotización Rápida', desc: 'Respuesta inmediata. Buscamos el mejor inventario en menos de 24 horas.' },
+        { title: 'Paso 2: Inspección Rigurosa', desc: 'Realizada en nuestro propio patio de 5,000 pyeong. Compartimos fotos y videos detallados de cada ítem.' },
+        { title: 'Paso 3: Documentación Perfecta', desc: 'Gestionamos todos los trámites, desde la baja hasta la declaración de exportación.' },
+        { title: 'Paso 4: Envío y Logística Óptima', desc: 'Aseguramos las mejores rutas con seguimiento en tiempo real.' },
+        { title: 'Paso 5: Soporte de Aduanas', desc: 'Apoyo en aduanas de destino y política de reembolso transparente.' }
       ],
       items: {
         tires: { title: 'Llantas Usadas', desc: 'Clasificación A/B/C y garantía de menos de 5 años.' },
@@ -203,29 +287,37 @@ export const translations: Record<Language, TranslationSet> = {
       }
     },
     blog: {
+      tag: 'Live Feed',
       title: 'Showcase',
-      subtitle: 'Inventario en vivo y la experiencia del patio de 5,000 pyeong.',
+      subtitle: 'Inventario en vivo y la experiencia de nuestro patio masivo de 5,000 pyeong.',
+      live_tag: 'Actualizado',
+      inventory_btn: 'Ver Disponibilidad',
       sections: {
-        yards: 'Infraestructura y Redes',
+        yards: 'Red de Infraestructura',
         inventory: 'Inventario en Vivo',
         tour: 'Tour del Patio (5,000 pyeong)',
         reviews: 'Reseñas Globales'
       }
     },
     about: {
+      tag: 'Liderazgo',
       title: 'Filosofía',
-      story_title: 'Integridad Militar en la Exportación',
-      story_content: 'Como ex capitán de la Fuerza Aérea, valoro la honestidad. Mi misión es ofrecer productos de calidad a precios justos.',
-      mission_title: 'Misión y Visión',
+      story_title: 'Integridad Militar',
+      story_content: 'Como ex capitán de la Fuerza Aérea, valoro la honestidad. Mi misión es ofrecer productos coreanos de alta calidad en nuestro gran patio de 5,000 pyeong.',
+      mission_title: 'Misión',
       mission_content: 'Construir una presencia global basada en la confianza.',
       expertise_title: 'Fortalezas',
-      expertise_list: ['Patio de 5,000 pyeong', 'Mecánico certificado', 'Experto en Aduanas', 'Red Nacional']
+      expertise_list: ['Patio masivo de 5,000 pyeong', 'Mecánico certificado', 'Experto en Aduanas', 'Red Nacional'],
+      cta_title: 'Expansión Global',
+      cta_desc: 'Únase a nuestra red de socios que confían en nuestros estándares.',
+      cta_btn: 'Ser Socio Oficial'
     },
     contact: {
-      title: 'Asociación Global',
+      tag: 'Asociación',
+      title: 'Contacto Global',
       subtitle: 'Indique ítem, cantidad y puerto para una cotización rápida.',
       form_name: 'Nombre/Empresa',
-      form_email: 'Correo',
+      form_email: 'Email',
       form_message: 'Mensaje',
       form_submit: 'Enviar'
     }
@@ -233,23 +325,38 @@ export const translations: Record<Language, TranslationSet> = {
   zh: {
     nav: { home: '首页', services: '服务', about: '关于', blog: '博客', contact: '联系我们', faq: '常见问题' },
     hero: {
+      tag: '值得信赖的韩国出口合作伙伴',
       title: '韩国二手出口的新标准，\nOnions Business',
       subtitle: '由前空军上尉诚信经营，结合专业机械维护眼光，为全球客户提供顶尖韩国二手产品。',
       cta: '咨询报价',
-      cta_whatsapp: 'WhatsApp 咨询'
+      cta_whatsapp: 'WhatsApp 咨询',
+      quote: '诚实是我们最大的资产。我们以军事级的精准连接韩国与世界。',
+      representative: '代表 Onion'
+    },
+    foundations: {
+      tag: '选择我们',
+      title: '我们的核心竞争力',
+      items: {
+        military: { title: '正直的军人精神', desc: '前空军上尉李代表确保每一笔交易都绝对诚信，绝无欺瞒。' },
+        technical: { title: '专业的维护眼光', desc: '基于国家认证的汽车维护资格证，我们亲自对技术性能进行严格检测。' },
+        infrastructure: { title: '压倒性的基础设施', desc: '拥有5,000坪大规模自营场地，确保大宗物资的稳定供应。' },
+        network: { title: '覆盖全国的网络', desc: '连接全国各地的报废车场和拍卖网络，获取最具竞争力的价格。' }
+      }
     },
     stats: { label1: '检测完成', label2: '出口国家', label3: '客户满意度' },
     services: {
+      tag: '卓越品质',
       title: '专业出口服务',
       description: '超越简单的代理，我们提供从检测、采购到物流的一站式解决方案。',
-      moq: '最小起订量：集装箱单位',
+      moq_label: '供应政策',
+      moq_value: '集装箱单位',
       process_title: 'Onion 标准服务 5 步流程',
       process_steps: [
-        { title: '第1步：快速报价与定制采购', desc: '即时反馈咨询。利用全国网络，在24小时内为您寻找最佳的轮胎、车辆或家电库存。' },
-        { title: '第2步：严格的质量检测', desc: '在5,000坪自营场地由专家直接检测。通过照片和视频向买家展示轮胎等级及发动机性能。' },
-        { title: '第3步：出口登记及完美单据处理', desc: '代办从车辆注销到出口报关的所有行政手续，确保买家无后顾之忧。' },
-        { title: '第4步：最优装运与物流', desc: '确保最佳的 RORO 船或集装箱航线。实时追踪货物状态，保证准时安全到达。' },
-        { title: '第5步：清关支持与售后保障', desc: '提供目的地清关支持，若发生质量投诉，我们有透明的退款/重发政策来维护长期合作。' }
+        { title: '第1步：快速报价与采购', desc: '即时反馈咨询。利用全国网络在24小时内为您寻找最佳库存。' },
+        { title: '第2步：严格的质量检测', desc: '在5,000坪自营场地由专家直接检测。通过照片和视频展示轮胎等级及发动机性能。' },
+        { title: '第3步：出口登记与单据', desc: '代办从车辆注销到出口报关的所有行政手续，确保买家无忧。' },
+        { title: '第4步：最优装运与物流', desc: '确保最佳的 RORO 船或集装箱航线，并提供实时追踪服务。' },
+        { title: '第5步：清关支持与售后', desc: '提供目的地清关支持，以透明的退款/重发政策维护长期合作。' }
       ],
       items: {
         tires: { title: '二手轮胎', desc: 'A/B/C等级精准分类，保障5年内出厂。' },
@@ -260,30 +367,38 @@ export const translations: Record<Language, TranslationSet> = {
       }
     },
     blog: {
+      tag: '现场新闻',
       title: '现场新闻',
-      subtitle: '查看实时库存信息和5000坪场地的生动场景。',
+      subtitle: '查看实时库存信息和5,000坪场地的生动场景。',
+      live_tag: '实时更新',
+      inventory_btn: '查看库存',
       sections: {
-        yards: '合作车场与基础设施',
+        yards: '基础设施与网络',
         inventory: '实时推荐库存',
-        tour: '场地参观（5,000坪）',
+        tour: '场地参观 (5,000坪)',
         reviews: '全球客户评价'
       }
     },
     about: {
-      title: 'Onion 的哲学',
-      story_title: '以正直的军人精神连接世界',
-      story_content: '前空军上尉代表亲自实地考察。减少不必要的中间环节，正直地供应高质量韩国产品是我的使命。作为拥有5000坪场地和维护资格证的专家，我们承诺绝不妥协的品质。',
-      mission_title: '使命与愿景',
-      mission_content: '以信任为基础在全球建立据点，成为能够解决各国业务难题的真正全球合作伙伴。',
+      tag: '领导力',
+      title: '哲学',
+      story_title: '以正直精神连接世界',
+      story_content: '前空军上尉代表亲自实地考察。减少中间环节，正直地供应高质量韩国产品是我的使命。我们的5,000坪大规模场地是信任的基石。',
+      mission_title: '使命',
+      mission_content: '以信任为基础在全球建立据点，成为全球合作伙伴。',
       expertise_title: '核心能力',
-      expertise_list: ['拥有5000坪自营场地', '拥有汽车维护资格证', '关税/通关专业知识', '全国报废车场/拍卖场网络']
+      expertise_list: ['5,000坪大规模自营场地', '专业维护资格证', '通关专业知识', '全国采购网络'],
+      cta_title: '扩展全球业务',
+      cta_desc: '加入数以百计信任我们严苛标准的全球合作伙伴网络。',
+      cta_btn: '成为正式合作伙伴'
     },
     contact: {
-      title: '全球合作伙伴关系',
+      tag: '合作伙伴',
+      title: '全球合作',
       subtitle: '请留下品名、数量和目的港，我们将迅速为您提供报价。',
       form_name: '姓名/公司名',
       form_email: '电子邮箱',
-      form_message: '咨询内容（品名、数量、预算等）',
+      form_message: '咨询内容',
       form_submit: '发送咨询'
     }
   }
