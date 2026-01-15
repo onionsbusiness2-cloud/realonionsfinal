@@ -214,7 +214,6 @@ const HomePage = ({ lang }: { lang: Language }) => {
         
         <div className="w-full max-w-[1200px] px-6 relative">
            <div className="absolute inset-0 bg-gradient-to-t from-[#FAF9F6] via-transparent to-transparent z-10 pointer-events-none"></div>
-           {/* Fixed Hero Image with verified Unsplash ID */}
            <img 
              src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=2000" 
              alt="Global Logistics Center" 
@@ -416,7 +415,7 @@ const AboutPage = ({ lang }: { lang: Language }) => {
               />
               <div className="absolute bottom-10 left-10 md:bottom-12 md:left-12 bg-white/90 backdrop-blur-xl p-8 md:p-10 rounded-[40px] shadow-2xl">
                  <div className="text-[12px] font-black text-[#D4AF37] tracking-[0.3em] mb-2 uppercase">Representative CEO</div>
-                 <div className="text-[28px] font-black text-[#1A2A44]">Captain Lee (Onion)</div>
+                 <div className="text-[28px] font-black text-[#1A2A44]">Officer Lee (Onion)</div>
               </div>
            </div>
         </div>

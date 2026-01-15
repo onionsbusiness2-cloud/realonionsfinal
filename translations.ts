@@ -7,7 +7,7 @@ export const translations: Record<Language, TranslationSet> = {
     hero: {
       tag: '신뢰할 수 있는 한국 수출 파트너',
       title: '한국 중고 수출의 새로운 기준,\nOnions Business',
-      subtitle: '공군 대위 출신의 정직함과 정비 전문가의 안목으로 전 세계 바이어에게 최상의 한국 제품을 공급합니다.',
+      subtitle: '공군 장교 출신의 정직함과 정비 전문가의 안목으로 전 세계 바이어에게 최상의 한국 제품을 공급합니다.',
       cta: '견적 문의하기',
       cta_whatsapp: 'WhatsApp 상담',
       quote: '정직은 우리의 가장 큰 자산입니다. 군사 수준의 정밀함으로 한국과 세계를 잇겠습니다.',
@@ -17,7 +17,7 @@ export const translations: Record<Language, TranslationSet> = {
       tag: '왜 어니언 비즈니스인가',
       title: '우리의 핵심 역량',
       items: {
-        military: { title: '군인 정신의 정직함', desc: '공군 대위 출신 이성현 대표가 모든 거래에서 타협 없는 정직함을 보장합니다.' },
+        military: { title: '군인 정신의 정직함', desc: '공군 장교 출신 이성현 대표가 모든 거래에서 타협 없는 정직함을 보장합니다.' },
         technical: { title: '정비 전문가의 안목', desc: '국가 공인 자동차 정비 자격증을 바탕으로 기술적 완성도를 직접 검수합니다.' },
         infrastructure: { title: '압도적 인프라', desc: '5,000평 규모의 대형 자체 야드를 통해 대량 물량을 안정적으로 공급합니다.' },
         network: { title: '전국 단위 네트워크', desc: '전국 폐차장 및 옥션 네트워크를 통해 가장 경쟁력 있는 가격과 수량을 확보합니다.' }
@@ -63,7 +63,7 @@ export const translations: Record<Language, TranslationSet> = {
       tag: '리더십',
       title: 'Onion의 철학',
       story_title: '정직한 군인 정신으로 세상을 잇다',
-      story_content: '공군 대위 출신 대표가 직접 발로 뜁니다. 불필요한 마진을 줄이고 고품질 한국 제품을 정직하게 공급하는 것이 저의 사명입니다. 5,000평 규모의 대형 야드와 정비 자격증을 보유한 전문가로서 타협 없는 품질을 약속합니다.',
+      story_content: '공군 장교 출신 대표가 직접 발로 뜁니다. 불필요한 마진을 줄이고 고품질 한국 제품을 정직하게 공급하는 것이 저의 사명입니다. 5,000평 규모의 대형 야드와 정비 자격증을 보유한 전문가로서 타협 없는 품질을 약속합니다.',
       mission_title: '미션 & 비전',
       mission_content: '신뢰를 바탕으로 전 세계에 거점을 마련하여 글로벌 파트너가 되겠습니다.',
       expertise_title: '핵심 역량',
@@ -87,7 +87,7 @@ export const translations: Record<Language, TranslationSet> = {
     hero: {
       tag: 'Trusted Korean Export Partner',
       title: 'New Standard in Korean Exports,\nOnions Business',
-      subtitle: 'Led by a former Air Force Captain with mechanical expertise, delivering premium Korean goods to global buyers.',
+      subtitle: 'Led by a former Air Force Officer with mechanical expertise, delivering premium Korean goods to global buyers.',
       cta: 'Get a Quote',
       cta_whatsapp: 'WhatsApp Chat',
       quote: 'Honesty is our greatest asset. We bridge Korea and the world with military-grade precision.',
@@ -97,7 +97,7 @@ export const translations: Record<Language, TranslationSet> = {
       tag: 'Why Us',
       title: 'Our Core Foundations',
       items: {
-        military: { title: 'Military Integrity', desc: 'Former Air Force Captain Lee ensures absolute honesty in every single deal.' },
+        military: { title: 'Military Integrity', desc: 'Former Air Force Officer Lee ensures absolute honesty in every single deal.' },
         technical: { title: 'Technical Mastery', desc: 'Official maintenance certification ensures professional-grade technical inspections.' },
         infrastructure: { title: 'Massive Infrastructure', desc: 'Our large 5,000-pyeong proprietary yard guarantees stable large-scale supply.' },
         network: { title: 'Nationwide Network', desc: 'Connected to nationwide scrap yards for best pricing and bulk availability.' }
@@ -143,7 +143,7 @@ export const translations: Record<Language, TranslationSet> = {
       tag: 'Leadership',
       title: 'Philosophy',
       story_title: 'Integrity Beyond Borders',
-      story_content: 'As a former Air Force Captain, I value honesty above all. My mission is to provide high-quality Korean products at fair prices with uncompromising quality through our 5,000-pyeong facility.',
+      story_content: 'As a former Air Force Officer, I value honesty above all. My mission is to provide high-quality Korean products at fair prices with uncompromising quality through our 5,000-pyeong facility.',
       mission_title: 'Mission & Vision',
       mission_content: 'To build a global presence rooted in trust, helping partners overcome supply challenges.',
       expertise_title: 'Key Strengths',
@@ -167,17 +167,17 @@ export const translations: Record<Language, TranslationSet> = {
     hero: {
       tag: '信頼できる韓国輸出パートナー',
       title: '韓国輸出の新しい基準、\nOnions Business',
-      subtitle: '元空軍大尉としての誠実さと整備専門家の確かな目で、世界中のバイヤーへ最高品質の韓国製品をお届けします。',
+      subtitle: '元空軍将校としての誠実さと整備専門가의確かな目で、世界中のバイヤーへ最高品質の韓国製品をお届けします。',
       cta: '見積もり依頼',
       cta_whatsapp: 'WhatsApp相談',
       quote: '誠実さは私たちの最大の資産です。軍事レベルの精密さで、韓国と世界を繋ぎます。',
-      representative: '代表 オニオン'
+      representative: '代表 オ니온'
     },
     foundations: {
       tag: '選ばれる理由',
       title: '私たちの核心的な強み',
       items: {
-        military: { title: '軍人精神の誠実さ', desc: '元空軍大尉のイ・ソンヒョン代表が、すべての取引において妥協のない誠実さを保証します。' },
+        military: { title: '軍人精神の誠実さ', desc: '元空軍将校のイ・ソンヒョン代表が、すべての取引において妥協のない誠実さを保証します。' },
         technical: { title: '整備専門家の技術力', desc: '国家公認の自動車整備士資格に基づき、技術的な完成度を直接検品します。' },
         infrastructure: { title: '圧倒的なインフラ', desc: '5,000坪規模の自社ヤードを通じて、大量の物量を安定的に供給します。' },
         network: { title: '全域ネットワーク', desc: '全国の解体業者やオークションネットワークを通じて、最も競争力のある価格を確保します。' }
@@ -190,7 +190,7 @@ export const translations: Record<Language, TranslationSet> = {
       description: '単なる代行を超え、検品、買収、物流までワンストップで解決します。',
       moq_label: '供給ポリシー',
       moq_value: 'コンテナ単位',
-      process_title: 'オ니オン・スタンダード5段階サービス',
+      process_title: 'オ니온・スタンダード5段階サービス',
       process_steps: [
         { title: '1段階：迅速な見積もり', desc: 'バイヤーの要請に即座に対応。24時間以内に全国のネットワークから最適な在庫を確認します。' },
         { title: '2段階：徹底した品質検品', desc: '5,000坪の大規模ヤードで専門家が直接検品。写真と動画でバイヤーに詳細を共有します。' },
@@ -223,7 +223,7 @@ export const translations: Record<Language, TranslationSet> = {
       tag: 'リーダーシップ',
       title: '哲学',
       story_title: '軍人精神で世界を繋ぐ',
-      story_content: '元空軍大尉の代表が自ら現場で動きます。不必要なマージンを省き、高品質な韓国製品を誠実にお届けします。5,000坪の自社ヤードを保有しています。',
+      story_content: '元空軍将校の代表が自ら現場で動きます。不必要なマージンを省き、高品質な韓国製品を誠実にお届けします. 5,000坪の自社ヤードを保有しています。',
       mission_title: 'ミッション',
       mission_content: '信頼を基盤に世界中に拠点を設け、グローバルパートナーとなることを目指します。',
       expertise_title: 'コアコンピタンス',
@@ -247,7 +247,7 @@ export const translations: Record<Language, TranslationSet> = {
     hero: {
       tag: 'Socio de Exportación Coreano de Confianza',
       title: 'Nuevo Estándar en Exportaciones Coreanas,\nOnions Business',
-      subtitle: 'Liderado por un ex capitán de la Fuerza Aérea con experiencia mecánica, entregando bienes coreanos premium.',
+      subtitle: 'Liderado por un ex oficial de la Fuerza Aérea con experiencia mecánica, entregando bienes coreanos premium.',
       cta: 'Cotizar',
       cta_whatsapp: 'WhatsApp',
       quote: 'La honestidad is nuestro mayor activo. Unimos a Corea con el mundo con precisión militar.',
@@ -257,7 +257,7 @@ export const translations: Record<Language, TranslationSet> = {
       tag: '¿Por qué nosotros?',
       title: 'Nuestros Pilares Fundamentales',
       items: {
-        military: { title: 'Integridad Militar', desc: 'El CEO Lee, ex capitán de la Fuerza Aérea, asegura honestidad absoluta en cada trato.' },
+        military: { title: 'Integridad Militar', desc: 'El CEO Lee, ex oficial de la Fuerza Aérea, asegura honestidad absoluta en cada trato.' },
         technical: { title: 'Maestría Técnica', desc: 'La certificación oficial de mantenimiento asegura inspecciones técnicas de nivel profesional.' },
         infrastructure: { title: 'Infraestructura Masiva', desc: 'Nuestro patio de 5,000 pyeong de gran escala garantiza un suministro estable.' },
         network: { title: 'Red Nacional', desc: 'Conectados con patios de desguace en todo el país para obtener los mejores precios.' }
@@ -303,7 +303,7 @@ export const translations: Record<Language, TranslationSet> = {
       tag: 'Liderazgo',
       title: 'Filosofía',
       story_title: 'Integridad Militar',
-      story_content: 'Como ex capitán de la Fuerza Aérea, valoro la honestidad. Mi misión es ofrecer productos coreanos de alta calidad en nuestro gran patio de 5,000 pyeong.',
+      story_content: 'Como ex oficial de la Fuerza Aérea, valoro la honestidad. Mi misión es ofrecer productos coreanos de alta calidad en nuestro gran patio de 5,000 pyeong.',
       mission_title: 'Misión',
       mission_content: 'Construir una presencia global basada en la confianza.',
       expertise_title: 'Fortalezas',
@@ -327,7 +327,7 @@ export const translations: Record<Language, TranslationSet> = {
     hero: {
       tag: '值得信赖的韩国出口合作伙伴',
       title: '韩国二手出口的新标准，\nOnions Business',
-      subtitle: '由前空军上尉诚信经营，结合专业机械维护眼光，为全球客户提供顶尖韩国二手产品。',
+      subtitle: '由前空军军官诚信经营，结合专业机械维护眼光，为全球客户提供顶尖韩国二手产品。',
       cta: '咨询报价',
       cta_whatsapp: 'WhatsApp 咨询',
       quote: '诚实是我们最大的资产。我们以军事级的精准连接韩国与世界。',
@@ -337,7 +337,7 @@ export const translations: Record<Language, TranslationSet> = {
       tag: '选择我们',
       title: '我们的核心竞争力',
       items: {
-        military: { title: '正直的军人精神', desc: '前空军上尉李代表确保每一笔交易都绝对诚信，绝无欺瞒。' },
+        military: { title: '正直的军人精神', desc: '前空军军官李代表确保每一笔交易都绝对诚信，绝无欺瞒。' },
         technical: { title: '专业的维护眼光', desc: '基于国家认证的汽车维护资格证，我们亲自对技术性能进行严格检测。' },
         infrastructure: { title: '压倒性的基础设施', desc: '拥有5,000坪大规模自营场地，确保大宗物资的稳定供应。' },
         network: { title: '覆盖全国的网络', desc: '连接全国各地的报废车场和拍卖网络，获取最具竞争力的价格。' }
@@ -383,7 +383,7 @@ export const translations: Record<Language, TranslationSet> = {
       tag: '领导力',
       title: '哲学',
       story_title: '以正直精神连接世界',
-      story_content: '前空军上尉代表亲自实地考察。减少中间环节，正直地供应高质量韩国产品是我的使命。我们的5,000坪大规模场地是信任的基石。',
+      story_content: '前空军军官代表亲自实地考察。减少中间环节，正直地供应高质量韩国产品是我的使命。我们的5,000坪大规模场地是信任的基石。',
       mission_title: '使命',
       mission_content: '以信任为基础在全球建立据点，成为全球合作伙伴。',
       expertise_title: '核心能力',
@@ -416,7 +416,7 @@ export const faqs: Record<Language, FAQItem[]> = {
     { question: 'What are the payment terms?', answer: 'Typically T/T (advance payment). Incoterms like FOB or CIF can be negotiated.' }
   ],
   jp: [
-    { question: '最小注文数量（MOQ）はいくらですか？', answer: '基本的にコンテナ単位の取引を優先しており、最低500個（タイヤ基準）からとなります。' },
+    { question: '最小注文数量（MOQ）はいくらですか？', answer: '基本的にコンテナ単位의取引を優先しており、最低500個（タイヤ基準）からとなります。' },
     { question: '品質検査はどのように行われますか？', answer: '代表である私が直接一次検査を行い、タイヤの場合は摩耗状態に応じてA, B, Cランクに厳格に分類します。' },
     { question: '支払い条件はどうなっていますか？', answer: '通常、前払い（T/T）方式を使用しており、インコtermsはFOBまたはCIF条件で調整可能です。' }
   ],
